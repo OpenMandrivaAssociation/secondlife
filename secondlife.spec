@@ -23,6 +23,7 @@ Patch2: slviewer-src-beta-1.14.1.2-boost.patch
 Patch3: slviewer-src-beta-1.14.1.2-no_fmod.patch
 Patch6: slviewer-src-beta-1.14.1.2-ELFIO.patch
 Patch7: slviewer-src-beta-1.13.4.7-datapath.patch
+Patch8: moz15.patch
 License: GPL
 Group: Games/Other
 Url: http://secondlife.com/
@@ -46,6 +47,7 @@ Second Life is a 3-D virtual world entirely built and owned by its residents.
 %patch3 -p1 -b .no_fmod
 %patch6 -p1 -b .ELFIO
 %patch7 -p1 -b .datapath
+%patch8 -p1 -b .nomozlib
 
 perl -pi -e 's/\Qg++-3.4\E/g++/' indra/SConstruct
 
