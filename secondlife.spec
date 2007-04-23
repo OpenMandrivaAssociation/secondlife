@@ -1,5 +1,6 @@
 %define name secondlife
-%define version 1.14.0.0
+%define version 1.15.0.0
+%define beta 1
 %define snapshot 0
 %if %{snapshot}
 %define release %mkrel 0.%{snapshot}.1
@@ -7,7 +8,7 @@
 %define distname %{oname}-%{snapshot}
 %else
 %define release %mkrel 1
-%define oname slviewer-src
+%define oname slviewer-src%{?beta:-beta}
 %define distname %{oname}-%{version}
 %endif
 
@@ -17,12 +18,10 @@ Version: %{version}
 Release: %{release}
 Source0: http://secondlife.com/developers/opensource/downloads/%{distname}.tar.bz2
 Patch1: slviewer-src-20070108c-cplusplus.patch
-Patch2: slviewer-src-20070108c-boost.patch
-Patch3: slviewer-src-beta-1.13.4.7-no_fmod.patch
-Patch6: slviewer-src-20070126a-ELFIO.patch
+Patch2: slviewer-src-beta-1.14.1.2-boost.patch
+Patch3: slviewer-src-beta-1.14.1.2-no_fmod.patch
+Patch6: slviewer-src-beta-1.14.1.2-ELFIO.patch
 Patch7: slviewer-src-beta-1.13.4.7-datapath.patch
-Patch8: slviewer-src-beta-1.13.4.7-extra.patch
-Patch9: slviewer-src-beta-1.13.4.7-uictrlfactory.patch
 License: GPL
 Group: Games/Other
 Url: http://secondlife.com/
@@ -45,8 +44,6 @@ Second Life is a 3-D virtual world entirely built and owned by its residents.
 %patch3 -p1 -b .no_fmod
 %patch6 -p1 -b .ELFIO
 %patch7 -p1 -b .datapath
-%patch8 -p1 -b .extra
-%patch9 -p1 -b .uictrlfactory
 
 perl -pi -e 's/\Qg++-3.4\E/g++/' indra/SConstruct
 
