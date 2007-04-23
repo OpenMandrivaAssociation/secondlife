@@ -17,6 +17,7 @@ Name: %{name}
 Version: %{version}
 Release: %{release}
 Source0: http://secondlife.com/developers/opensource/downloads/%{distname}.tar.bz2
+Patch0: slviewer-src-1.15.0.0-releasefiles.patch
 Patch1: slviewer-src-20070108c-cplusplus.patch
 Patch2: slviewer-src-beta-1.14.1.2-boost.patch
 Patch3: slviewer-src-beta-1.14.1.2-no_fmod.patch
@@ -39,6 +40,7 @@ Second Life is a 3-D virtual world entirely built and owned by its residents.
 
 %prep
 %setup -q -n linden
+%patch0 -p1 -b .releasefiles
 %patch1 -p1 -b .cplusplus
 %patch2 -p1 -b .boost
 %patch3 -p1 -b .no_fmod
