@@ -8,7 +8,11 @@
 %define distname %{oname}-%{snapshot}
 %else
 %define release %mkrel 1
-%define oname slviewer-src%{?beta:-beta}
+%if %{beta}
+%define oname slviewer-src-beta
+%else
+%define oname slviewer-src
+%endif
 %define distname %{oname}-%{version}
 %endif
 
