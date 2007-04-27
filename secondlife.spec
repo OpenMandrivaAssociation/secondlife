@@ -45,7 +45,9 @@ Second Life is a 3-D virtual world entirely built and owned by its residents.
 
 %prep
 %setup -q -n linden
+%if %{beta}
 %patch0 -p1 -b .releasefiles
+%endif
 %patch1 -p1 -b .cplusplus
 %patch2 -p1 -b .boost
 %patch3 -p1 -b .no_fmod
