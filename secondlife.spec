@@ -91,7 +91,7 @@ install -m 755 indra/newview/linux_tools/wrapper.sh %{buildroot}%{_gamesbindir}/
 
 pushd indra/newview
   install -d %{buildroot}%{_gamesdatadir}/%{name}
-  cp -a app_settings character fonts skins res-sdl \
+  cp -a app_settings skins \
         featuretable.txt gpu_table.txt \
         %{buildroot}%{_gamesdatadir}/%{name}
 popd
