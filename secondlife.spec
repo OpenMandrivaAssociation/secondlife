@@ -1,6 +1,6 @@
 %define name secondlife
-%define version 1.15.0.0
-%define beta 1
+%define version 1.15.0.2
+%define beta 0
 %define snapshot 0
 %if %{snapshot}
 %define release %mkrel 0.%{snapshot}.1
