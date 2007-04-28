@@ -7,7 +7,7 @@
 %define oname slviewer-src
 %define distname %{oname}-%{snapshot}
 %else
-%define release %mkrel 2
+%define release %mkrel 3
 %if %{beta}
 %define oname slviewer-src-beta
 %else
@@ -15,8 +15,9 @@
 %endif
 %define distname %{oname}-%{version}
 %endif
+%define Summary Second Life online 3-D virtual world
 
-Summary: Online 3-D virtual world
+Summary: %{Summary}
 Name: %{name}
 Version: %{version}
 Release: %{release}
@@ -41,7 +42,8 @@ Requires: fonts-ttf-bitstream-vera
 Requires: secondlife-artwork
 
 %description
-Second Life is a 3-D virtual world entirely built and owned by its residents.
+Second Life is an online 3-D virtual world entirely built and owned by
+its residents.
 
 %prep
 %setup -q -n linden
@@ -106,7 +108,7 @@ cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}.desktop << EOF
 [Desktop Entry]
 Encoding=UTF-8
 Name=Second Life
-Comment=Second Life online 3-D virtual world
+Comment=%{Summary}
 Exec=soundwrapper %{_gamesbindir}/%{name}
 Icon=%{_gamesdatadir}/%{name}/res/ll_icon.ico
 Terminal=false
