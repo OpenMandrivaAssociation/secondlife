@@ -101,6 +101,19 @@ for f in MtBdLfRg.ttf MtBkLfRg.ttf profontwindows.ttf unicode.ttf; do
   ln -s /usr/share/fonts/TTF/Vera.ttf %{buildroot}%{_gamesdatadir}/%{name}/fonts/$f
 done
 
+mkdir -p %{buildroot}%{_datadir}/applications
+cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}.desktop << EOF
+[Desktop Entry]
+Encoding=UTF-8
+Name=Second Life
+Comment=Second Life online 3-D virtual world
+Exec=soundwrapper %{_gamesbindir}/%{name}
+Icon=%{_gamesdatadir}/%{name}/res/ll_icon.ico
+Terminal=false
+Type=Application
+Categories=Game;AdventureGame;X-MandrivaLinux-MoreApplications-Games-Adventure;
+EOF
+
 %clean
 rm -rf %{buildroot}
 
@@ -110,5 +123,4 @@ rm -rf %{buildroot}
 %{_gamesbindir}/%{name}
 %{_gamesbindir}/%{name}.bin
 %{_gamesdatadir}/%{name}
-
-
+%{_datadir}/applications/mandriva-%{name}.desktop
