@@ -7,7 +7,7 @@
 %define oname slviewer-src
 %define distname %{oname}-%{snapshot}
 %else
-%define release %mkrel 1
+%define release %mkrel 2
 %if %{beta}
 %define oname slviewer-src-beta
 %else
@@ -89,15 +89,17 @@ install -d %{buildroot}%{_gamesbindir}
 install -m 755 indra/newview/%{name}-*-bin-globalsyms %{buildroot}%{_gamesbindir}/%{name}.bin
 install -m 755 indra/newview/linux_tools/wrapper.sh %{buildroot}%{_gamesbindir}/%{name}
 
+install -d %{buildroot}%{_gamesdatadir}/%{name}/fonts
 pushd indra/newview
-  install -d %{buildroot}%{_gamesdatadir}/%{name}
   cp -a app_settings skins \
         featuretable.txt gpu_table.txt \
         %{buildroot}%{_gamesdatadir}/%{name}
 popd
 
 install -m 644 scripts/messages/message_template.msg %{buildroot}%{_gamesdatadir}/%{name}/app_settings/
-ln -s /usr/share/fonts/TTF/Vera.ttf %{buildroot}%{_gamesdatadir}/%{name}/unicode.ttf
+for f in MtBdLfRg.ttf MtBkLfRg.ttf profontwindows.ttf unicode.ttf; do
+  ln -s /usr/share/fonts/TTF/Vera.ttf %{buildroot}%{_gamesdatadir}/%{name}/fonts/$f
+done
 
 %clean
 rm -rf %{buildroot}
