@@ -39,6 +39,7 @@ BuildRequires: SDL-devel
 BuildRequires: apr-util-devel bison boost-devel curl-devel elfio-devel expat-devel
 BuildRequires: freetype2-devel gtk2-devel jpeg-devel flex libxmlrpc-devel
 BuildRequires: mesaglu-devel oggvorbis-devel openjpeg-devel scons zlib-devel
+BuildRequires: freealut-devel openal-devel
 BuildConflicts: freetype-devel
 Requires: fonts-ttf-bitstream-vera
 Requires: secondlife-artwork
