@@ -25,6 +25,7 @@ Source0: http://secondlife.com/developers/opensource/downloads/%{distname}.tar.b
 # missing files for png support, from https://jira.secondlife.com/browse/VWR-79
 Source1: https://jira.secondlife.com/secure/attachment/10030/png-support-20070127a.zip
 Patch0: slviewer-src-1.15.0.0-releasefiles.patch
+Patch1: slviewer-src-1.17.1.0-size_t.patch
 Patch2: slviewer-src-1.17.1.0-boost.patch
 Patch6: slviewer-src-1.17.1.0-ELFIO.patch
 Patch7: slviewer-src-1.17.1.0-datapath.patch
@@ -52,6 +53,7 @@ its residents.
 %if %{beta}
 %patch0 -p1 -b .releasefiles
 %endif
+%patch1 -p1 -b .size_t
 %patch2 -p1 -b .boost
 %patch6 -p1 -b .ELFIO
 %patch7 -p1 -b .datapath
