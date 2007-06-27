@@ -27,7 +27,6 @@ Patch2: slviewer-src-1.17.1.0-boost.patch
 Patch3: slviewer-src-beta-1.14.1.2-no_fmod.patch
 Patch6: slviewer-src-1.17.1.0-ELFIO.patch
 Patch7: slviewer-src-1.17.1.0-datapath.patch
-Patch8: moz15.patch
 # adapted from http://www.haxxed.com/code/slviewer-1.15.0.2-openal-20070513.patch
 Patch9: slviewer-1.15.0.2-openal.patch
 License: GPL
@@ -56,7 +55,6 @@ its residents.
 %patch3 -p1 -b .no_fmod
 %patch6 -p1 -b .ELFIO
 %patch7 -p1 -b .datapath
-%patch8 -p1 -b .nomozlib
 %patch9 -p1 -b .openal
 
 perl -pi -e 's/\Qg++-3.4\E/g++/' indra/SConstruct
