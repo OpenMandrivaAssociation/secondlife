@@ -22,6 +22,8 @@ Name: %{name}
 Version: %{version}
 Release: %{release}
 Source0: http://secondlife.com/developers/opensource/downloads/%{distname}.tar.bz2
+# missing files for png support, from https://jira.secondlife.com/browse/VWR-79
+Source1: https://jira.secondlife.com/secure/attachment/10030/png-support-20070127a.zip
 Patch0: slviewer-src-1.15.0.0-releasefiles.patch
 Patch2: slviewer-src-1.17.1.0-boost.patch
 Patch6: slviewer-src-1.17.1.0-ELFIO.patch
@@ -46,7 +48,7 @@ Second Life is an online 3-D virtual world entirely built and owned by
 its residents.
 
 %prep
-%setup -q -n linden
+%setup -q -n linden -a 1
 %if %{beta}
 %patch0 -p1 -b .releasefiles
 %endif
@@ -54,6 +56,10 @@ its residents.
 %patch6 -p1 -b .ELFIO
 %patch7 -p1 -b .datapath
 %patch9 -p1 -b .openal
+
+cp -a png-support-20070127a/linden/indra/llimage/* indra/llimage/
+perl -pi -e 's/LLImage\.h/llimage.h/' indra/llimage/*png*
+perl -pi -e 's,libpng/png\.h,png.h,' indra/llimage/*png*
 
 perl -pi -e 's/\Qg++-3.4\E/g++/' indra/SConstruct
 
