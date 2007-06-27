@@ -84,7 +84,7 @@ ln -s %{_includedir}/zlib.h libraries/include/zlib
 %endif
 
 pushd indra
-scons BUILD=release BTARGET=client DISTCC=no MOZLIB=no FMOD=no
+scons BUILD=release BTARGET=client STANDALONE=yes DISTCC=no MOZLIB=no FMOD=no
 popd
 
 %install
