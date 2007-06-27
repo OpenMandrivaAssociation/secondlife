@@ -24,7 +24,6 @@ Release: %{release}
 Source0: http://secondlife.com/developers/opensource/downloads/%{distname}.tar.bz2
 Patch0: slviewer-src-1.15.0.0-releasefiles.patch
 Patch2: slviewer-src-1.17.1.0-boost.patch
-Patch3: slviewer-src-beta-1.14.1.2-no_fmod.patch
 Patch6: slviewer-src-1.17.1.0-ELFIO.patch
 Patch7: slviewer-src-1.17.1.0-datapath.patch
 # adapted from http://www.haxxed.com/code/slviewer-1.15.0.2-openal-20070513.patch
@@ -52,7 +51,6 @@ its residents.
 %patch0 -p1 -b .releasefiles
 %endif
 %patch2 -p1 -b .boost
-%patch3 -p1 -b .no_fmod
 %patch6 -p1 -b .ELFIO
 %patch7 -p1 -b .datapath
 %patch9 -p1 -b .openal
@@ -81,7 +79,7 @@ CLIENT_CPPFLAGS=`pkg-config --cflags gtk+-2.0`
 export CLIENT_CPPFLAGS
 
 pushd indra
-scons BUILD=release BTARGET=client DISTCC=no MOZLIB=no
+scons BUILD=release BTARGET=client DISTCC=no MOZLIB=no FMOD=no
 popd
 
 %install
