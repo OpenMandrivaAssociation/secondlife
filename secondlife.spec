@@ -23,7 +23,6 @@ Version: %{version}
 Release: %{release}
 Source0: http://secondlife.com/developers/opensource/downloads/%{distname}.tar.bz2
 Patch0: slviewer-src-1.15.0.0-releasefiles.patch
-Patch1: slviewer-src-20070108c-cplusplus.patch
 Patch2: slviewer-src-beta-1.14.1.2-boost.patch
 Patch3: slviewer-src-beta-1.14.1.2-no_fmod.patch
 Patch6: slviewer-src-beta-1.14.1.2-ELFIO.patch
@@ -53,7 +52,6 @@ its residents.
 %if %{beta}
 %patch0 -p1 -b .releasefiles
 %endif
-%patch1 -p1 -b .cplusplus
 %patch2 -p1 -b .boost
 %patch3 -p1 -b .no_fmod
 %patch6 -p1 -b .ELFIO
