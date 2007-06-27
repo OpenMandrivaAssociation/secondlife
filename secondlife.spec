@@ -63,8 +63,6 @@ cp -a png-support-20070127a/linden/indra/llimage/* indra/llimage/
 perl -pi -e 's/LLImage\.h/llimage.h/' indra/llimage/*png*
 perl -pi -e 's,libpng/png\.h,png.h,' indra/llimage/*png*
 
-perl -pi -e 's/\Qg++-3.4\E/g++/' indra/SConstruct
-
 mkdir libraries/include/expat
 ln -s %{_includedir}/expat.h libraries/include/expat
 mkdir -p libraries/include/llfreetype2/freetype
