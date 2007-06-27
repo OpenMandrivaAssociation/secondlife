@@ -78,11 +78,10 @@ mkdir libraries/include/zlib
 ln -s %{_includedir}/zlib.h libraries/include/zlib
 
 %build
-CLIENT_CPPFLAGS=`pkg-config --cflags gtk+-2.0`
 %if %mdkversion < 200710
   CLIENT_CPPFLAGS="$CLIENT_CPPFLAGS -I/usr/include/freetype2 -I/usr/include/libpng12"
+  export CLIENT_CPPFLAGS
 %endif
-export CLIENT_CPPFLAGS
 
 pushd indra
 scons BUILD=release BTARGET=client DISTCC=no MOZLIB=no FMOD=no
