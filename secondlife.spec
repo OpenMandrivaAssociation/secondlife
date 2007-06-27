@@ -26,8 +26,8 @@ Patch0: slviewer-src-1.15.0.0-releasefiles.patch
 Patch2: slviewer-src-1.17.1.0-boost.patch
 Patch6: slviewer-src-1.17.1.0-ELFIO.patch
 Patch7: slviewer-src-1.17.1.0-datapath.patch
-# adapted from http://www.haxxed.com/code/slviewer-1.15.0.2-openal-20070513.patch
-Patch9: slviewer-1.15.0.2-openal.patch
+# adapted from http://www.haxxed.com/code/slviewer-1.17.0.12-openal-20070625.patch
+Patch9: slviewer-1.17.0.12-openal-20070625.patch
 License: GPL
 Group: Games/Other
 Url: http://secondlife.com/
