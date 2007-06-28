@@ -7,7 +7,7 @@
 %define oname slviewer-src
 %define distname %{oname}-%{snapshot}
 %else
-%define release %mkrel 1
+%define release %mkrel 2
 %if %{beta}
 %define oname slviewer-src-beta
 %else
@@ -94,6 +94,9 @@ install -d %{buildroot}%{_gamesbindir}
 install -m 755 indra/newview/%{name}-*-bin-globalsyms %{buildroot}%{_gamesbindir}/%{name}.bin
 install -m 755 indra/newview/linux_tools/wrapper.sh %{buildroot}%{_gamesbindir}/%{name}
 
+install -d %{buildroot}%{_libdir}
+install -m644 indra/lib_release_client/i686-linux/libll*.so %{buildroot}%{_libdir}
+
 install -d %{buildroot}%{_gamesdatadir}/%{name}/fonts
 pushd indra/newview
   cp -a app_settings skins \
@@ -127,5 +130,6 @@ rm -rf %{buildroot}
 %doc indra/newview/linux_tools/client-readme.txt indra/newview/releasenotes.txt indra/newview/lsl_guide.html
 %{_gamesbindir}/%{name}
 %{_gamesbindir}/%{name}.bin
+%{_libdir}/libll*.so
 %{_gamesdatadir}/%{name}
 %{_datadir}/applications/mandriva-%{name}.desktop
