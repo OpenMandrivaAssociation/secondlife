@@ -131,5 +131,6 @@ rm -rf %{buildroot}
 %{_gamesbindir}/%{name}
 %{_gamesbindir}/%{name}.bin
 %{_libdir}/libll*.so
+%defattr(0644,root,root,0755)
 %{_gamesdatadir}/%{name}
 %{_datadir}/applications/mandriva-%{name}.desktop
