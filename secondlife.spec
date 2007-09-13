@@ -26,6 +26,7 @@ Source0: http://secondlife.com/developers/opensource/downloads/%{distname}.tar.g
 Source1: https://jira.secondlife.com/secure/attachment/10030/png-support-20070127a.zip
 Patch0: slviewer-src-1.15.0.0-releasefiles.patch
 Patch1: slviewer-src-1.17.1.0-size_t.patch
+Patch2: slviewer-src-1.18.2.0-const_char.patch
 Patch7: slviewer-src-1.18.2.0-datapath.patch
 # adapted from http://www.haxxed.com/code/slviewer-1.17.0.12-openal-20070625.patch
 Patch9: slviewer-1.18.2.0-openal-20070625.patch
@@ -53,6 +54,7 @@ its residents.
 %patch0 -p1 -b .releasefiles
 %endif
 %patch1 -p1 -b .size_t
+%patch2 -p1 -b .const_char
 %patch7 -p1 -b .datapath
 %patch9 -p1 -b .openal
 
