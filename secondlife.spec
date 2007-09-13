@@ -28,6 +28,7 @@ Patch0: slviewer-src-1.15.0.0-releasefiles.patch
 Patch1: slviewer-src-1.17.1.0-size_t.patch
 Patch2: slviewer-src-1.18.2.0-const_char.patch
 Patch3: slviewer-src-1.18.2.0-get_factor.patch
+Patch4: slviewer-src-1.18.2.0-resolv.patch
 Patch7: slviewer-src-1.18.2.0-datapath.patch
 # adapted from http://www.haxxed.com/code/slviewer-1.17.0.12-openal-20070625.patch
 Patch9: slviewer-1.18.2.0-openal-20070625.patch
@@ -57,6 +58,7 @@ its residents.
 %patch1 -p1 -b .size_t
 %patch2 -p1 -b .const_char
 %patch3 -p1 -b .get_factor
+%patch4 -p1 -b .resolv
 %patch7 -p1 -b .datapath
 %patch9 -p1 -b .openal
 
