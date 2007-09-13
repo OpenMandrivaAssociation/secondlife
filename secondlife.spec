@@ -26,7 +26,6 @@ Source0: http://secondlife.com/developers/opensource/downloads/%{distname}.tar.g
 Source1: https://jira.secondlife.com/secure/attachment/10030/png-support-20070127a.zip
 Patch0: slviewer-src-1.15.0.0-releasefiles.patch
 Patch1: slviewer-src-1.17.1.0-size_t.patch
-Patch2: slviewer-src-1.17.1.0-boost.patch
 Patch6: slviewer-src-1.17.1.0-ELFIO.patch
 Patch7: slviewer-src-1.17.1.0-datapath.patch
 # adapted from http://www.haxxed.com/code/slviewer-1.17.0.12-openal-20070625.patch
@@ -36,7 +35,7 @@ Group: Games/Other
 Url: http://secondlife.com/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: SDL-devel
-BuildRequires: apr-util-devel bison boost-devel curl-devel elfio-devel expat-devel
+BuildRequires: apr-util-devel bison curl-devel elfio-devel expat-devel
 BuildRequires: freetype2-devel gtk2-devel jpeg-devel flex libxmlrpc-devel
 BuildRequires: mesaglu-devel oggvorbis-devel openjpeg-devel scons zlib-devel
 BuildRequires: freealut-devel openal-devel google-perftools-devel
@@ -54,7 +53,6 @@ its residents.
 %patch0 -p1 -b .releasefiles
 %endif
 %patch1 -p1 -b .size_t
-%patch2 -p1 -b .boost
 %patch6 -p1 -b .ELFIO
 %patch7 -p1 -b .datapath
 %patch9 -p1 -b .openal
