@@ -1,5 +1,5 @@
 %define name secondlife
-%define version 1.17.2.0
+%define version 1.18.2.0
 %define beta 0
 %define snapshot 0
 %if %{snapshot}
@@ -21,7 +21,7 @@ Summary: %{Summary}
 Name: %{name}
 Version: %{version}
 Release: %{release}
-Source0: http://secondlife.com/developers/opensource/downloads/%{distname}.tar.bz2
+Source0: http://secondlife.com/developers/opensource/downloads/%{distname}.tar.gz
 # missing files for png support, from https://jira.secondlife.com/browse/VWR-79
 Source1: https://jira.secondlife.com/secure/attachment/10030/png-support-20070127a.zip
 Patch0: slviewer-src-1.15.0.0-releasefiles.patch
