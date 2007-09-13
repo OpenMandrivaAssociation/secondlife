@@ -37,7 +37,7 @@ Group: Games/Other
 Url: http://secondlife.com/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: SDL-devel
-BuildRequires: apr-util-devel bison curl-devel elfio-devel expat-devel
+BuildRequires: apr-util-devel bison boost-devel curl-devel elfio-devel expat-devel
 BuildRequires: freetype2-devel gtk2-devel jpeg-devel flex libxmlrpc-devel
 BuildRequires: mesaglu-devel oggvorbis-devel openjpeg-devel scons zlib-devel
 BuildRequires: freealut-devel openal-devel google-perftools-devel
