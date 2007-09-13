@@ -38,6 +38,7 @@ BuildRequires: apr-util-devel bison curl-devel elfio-devel expat-devel
 BuildRequires: freetype2-devel gtk2-devel jpeg-devel flex libxmlrpc-devel
 BuildRequires: mesaglu-devel oggvorbis-devel openjpeg-devel scons zlib-devel
 BuildRequires: freealut-devel openal-devel google-perftools-devel
+#BuildRequires: libgstreamer-plugins-base-devel
 BuildConflicts: freetype-devel
 Requires: fonts-ttf-bitstream-vera
 Requires: secondlife-artwork
@@ -80,7 +81,7 @@ ln -s %{_includedir}/zlib.h libraries/include/zlib
 %endif
 
 pushd indra
-scons BUILD=release BTARGET=client STANDALONE=yes DISTCC=no MOZLIB=no FMOD=no
+scons BUILD=release BTARGET=client STANDALONE=yes DISTCC=no MOZLIB=no FMOD=no GSTREAMER=no
 popd
 
 %install
