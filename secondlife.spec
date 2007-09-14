@@ -7,7 +7,7 @@
 %define oname slviewer-src
 %define distname %{oname}-%{snapshot}
 %else
-%define release %mkrel 1
+%define release %mkrel 2x
 %if %{beta}
 %define oname slviewer-src-beta
 %else
@@ -17,6 +17,9 @@
 %endif
 %define Summary Second Life online 3-D virtual world
 %define sl_arch %(echo %{_target_cpu}|sed -e "s/\\(i.86\\|athlon\\)/i686/")
+
+# we use private symbols from resolv.a
+%define _requires_exceptions GLIBC_PRIVATE
 
 Summary: %{Summary}
 Name: %{name}
