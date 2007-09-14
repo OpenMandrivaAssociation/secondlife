@@ -42,6 +42,7 @@ BuildRequires: apr-util-devel bison boost-devel curl-devel elfio-devel expat-dev
 BuildRequires: freetype2-devel gtk2-devel jpeg-devel flex libxmlrpc-devel
 BuildRequires: mesaglu-devel oggvorbis-devel openjpeg-devel scons zlib-devel
 BuildRequires: freealut-devel openal-devel google-perftools-devel
+BuildRequires: glibc-static-devel
 #BuildRequires: libgstreamer-plugins-base-devel
 BuildConflicts: freetype-devel
 Requires: fonts-ttf-bitstream-vera
