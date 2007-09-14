@@ -16,6 +16,7 @@
 %define distname %{oname}-%{version}
 %endif
 %define Summary Second Life online 3-D virtual world
+%define sl_arch %(echo %{_target_cpu}|sed -e "s/\\(i.86\\|athlon\\)/i686/")
 
 Summary: %{Summary}
 Name: %{name}
@@ -87,7 +88,7 @@ ln -s %{_includedir}/zlib.h libraries/include/zlib
 %endif
 
 pushd indra
-scons BUILD=release BTARGET=client STANDALONE=yes DISTCC=no MOZLIB=no FMOD=no GSTREAMER=no
+scons BUILD=release BTARGET=client STANDALONE=yes ARCH=%{sl_arch} DISTCC=no MOZLIB=no FMOD=no GSTREAMER=no
 popd
 
 %install
