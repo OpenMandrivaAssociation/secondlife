@@ -7,7 +7,7 @@
 %define oname slviewer-src
 %define distname %{oname}-%{snapshot}
 %else
-%define release %mkrel 1
+%define release %mkrel 2
 %if %{beta}
 %define oname slviewer-src-beta
 %else
@@ -32,6 +32,7 @@ Patch0: slviewer-src-1.15.0.0-releasefiles.patch
 Patch1: slviewer-src-1.17.1.0-size_t.patch
 Patch2: slviewer-src-1.18.2.0-const_char.patch
 Patch4: slviewer-src-1.18.2.0-resolv.patch
+Patch5: slviewer-1.18.2.1-nomanifest.patch
 Patch7: slviewer-src-1.18.2.0-datapath.patch
 # adapted from http://www.haxxed.com/code/slviewer-1.17.0.12-openal-20070625.patch
 Patch9: slviewer-1.18.2.0-openal-20070625.patch
@@ -63,6 +64,7 @@ its residents.
 %patch1 -p1 -b .size_t
 %patch2 -p1 -b .const_char
 %patch4 -p1 -b .resolv
+%patch5 -p1 -b .nomanifest
 %patch7 -p1 -b .datapath
 %patch9 -p1 -b .openal
 %patch10 -p1 -b .get_factor
