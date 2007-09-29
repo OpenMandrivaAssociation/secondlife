@@ -92,7 +92,7 @@ ln -s %{_includedir}/zlib.h libraries/include/zlib
 %endif
 
 pushd indra
-scons BUILD=release BTARGET=client STANDALONE=yes ARCH=%{sl_arch} DISTCC=no MOZLIB=no FMOD=no GSTREAMER=no
+scons BUILD=releasefordownload BTARGET=client STANDALONE=yes ARCH=%{sl_arch} DISTCC=no MOZLIB=no FMOD=no GSTREAMER=no
 popd
 
 %install
