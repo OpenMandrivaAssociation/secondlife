@@ -40,6 +40,7 @@ Patch10: slviewer-src-1.18.2.0-get_factor.patch
 License: GPL
 Group: Games/Other
 Url: http://secondlife.com/
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: SDL-devel
 BuildRequires: apr-util-devel bison boost-devel curl-devel elfio-devel expat-devel
 BuildRequires: freetype2-devel gtk2-devel jpeg-devel flex libxmlrpc-devel
