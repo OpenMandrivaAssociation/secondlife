@@ -3,7 +3,7 @@
 %define beta 0
 %define snapshot 0
 %if %{snapshot}
-%define release %mkrel 0.%{snapshot}.2
+%define release %mkrel 0.%{snapshot}.3
 %define oname slviewer-src
 %define distname %{oname}-%{snapshot}
 %else
