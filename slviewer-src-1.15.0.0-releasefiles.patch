@@ -1,0 +1,18 @@
+--- linden/indra/newview/files.lst.releasefiles	2007-04-19 01:38:55.000000000 +0200
++++ linden/indra/newview/files.lst	2007-04-23 19:55:32.000000000 +0200
+@@ -98,7 +98,6 @@
+ newview/llfloaterpostcard.cpp
+ newview/llfloaterpreference.cpp
+ newview/llfloaterproperties.cpp
+-newview/llfloaterrate.cpp
+ newview/llfloaterregioninfo.cpp
+ newview/llfloaterreporter.cpp
+ newview/llfloatersaveavatar.cpp
+@@ -293,7 +292,6 @@
+ newview/llviewerpartsource.cpp
+ newview/llviewerprecompiledheaders.cpp
+ newview/llviewerregion.cpp
+-newview/llviewerreputation.cpp
+ newview/llviewerstats.cpp
+ newview/llviewertexteditor.cpp
+ newview/llviewertextureanim.cpp

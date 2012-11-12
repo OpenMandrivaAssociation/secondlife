@@ -1,0 +1,648 @@
+--- linden/indra/llcharacter/llbvhloader.cpp.const_char	2007-08-10 19:36:41.000000000 +0200
++++ linden/indra/llcharacter/llbvhloader.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -58,37 +58,37 @@ char gOutFile[1024];		/* Flawfinder: ign
+ //------------------------------------------------------------------------
+ // Status Codes
+ //------------------------------------------------------------------------
+-char *LLBVHLoader::ST_OK				= "Ok";
+-char *LLBVHLoader::ST_EOF				= "Premature end of file.";
+-char *LLBVHLoader::ST_NO_CONSTRAINT		= "Can't read constraint definition.";
+-char *LLBVHLoader::ST_NO_FILE			= "Can't open BVH file.";
+-char *LLBVHLoader::ST_NO_HIER			= "Invalid HIERARCHY header.";
+-char *LLBVHLoader::ST_NO_JOINT			= "Can't find ROOT or JOINT.";
+-char *LLBVHLoader::ST_NO_NAME			= "Can't get JOINT name.";
+-char *LLBVHLoader::ST_NO_OFFSET			= "Can't find OFFSET.";
+-char *LLBVHLoader::ST_NO_CHANNELS		= "Can't find CHANNELS.";
+-char *LLBVHLoader::ST_NO_ROTATION		= "Can't get rotation order.";
+-char *LLBVHLoader::ST_NO_AXIS			= "Can't get rotation axis.";
+-char *LLBVHLoader::ST_NO_MOTION			= "Can't find MOTION.";
+-char *LLBVHLoader::ST_NO_FRAMES			= "Can't get number of frames.";
+-char *LLBVHLoader::ST_NO_FRAME_TIME		= "Can't get frame time.";
+-char *LLBVHLoader::ST_NO_POS			= "Can't get position values.";
+-char *LLBVHLoader::ST_NO_ROT			= "Can't get rotation values.";
+-char *LLBVHLoader::ST_NO_XLT_FILE		= "Can't open translation file.";
+-char *LLBVHLoader::ST_NO_XLT_HEADER		= "Can't read translation header.";
+-char *LLBVHLoader::ST_NO_XLT_NAME		= "Can't read translation names.";
+-char *LLBVHLoader::ST_NO_XLT_IGNORE		= "Can't read translation ignore value.";
+-char *LLBVHLoader::ST_NO_XLT_RELATIVE	= "Can't read translation relative value.";
+-char *LLBVHLoader::ST_NO_XLT_OUTNAME	= "Can't read translation outname value.";
+-char *LLBVHLoader::ST_NO_XLT_MATRIX		= "Can't read translation matrix.";
+-char *LLBVHLoader::ST_NO_XLT_MERGECHILD = "Can't get mergechild name.";
+-char *LLBVHLoader::ST_NO_XLT_MERGEPARENT = "Can't get mergeparent name.";
+-char *LLBVHLoader::ST_NO_XLT_PRIORITY	= "Can't get priority value.";
+-char *LLBVHLoader::ST_NO_XLT_LOOP		= "Can't get loop value.";
+-char *LLBVHLoader::ST_NO_XLT_EASEIN		= "Can't get easeIn values.";
+-char *LLBVHLoader::ST_NO_XLT_EASEOUT	= "Can't get easeOut values.";
+-char *LLBVHLoader::ST_NO_XLT_HAND		= "Can't get hand morph value.";
+-char *LLBVHLoader::ST_NO_XLT_EMOTE		= "Can't read emote name.";
++const char *LLBVHLoader::ST_OK				= "Ok";
++const char *LLBVHLoader::ST_EOF				= "Premature end of file.";
++const char *LLBVHLoader::ST_NO_CONSTRAINT		= "Can't read constraint definition.";
++const char *LLBVHLoader::ST_NO_FILE			= "Can't open BVH file.";
++const char *LLBVHLoader::ST_NO_HIER			= "Invalid HIERARCHY header.";
++const char *LLBVHLoader::ST_NO_JOINT			= "Can't find ROOT or JOINT.";
++const char *LLBVHLoader::ST_NO_NAME			= "Can't get JOINT name.";
++const char *LLBVHLoader::ST_NO_OFFSET			= "Can't find OFFSET.";
++const char *LLBVHLoader::ST_NO_CHANNELS		= "Can't find CHANNELS.";
++const char *LLBVHLoader::ST_NO_ROTATION		= "Can't get rotation order.";
++const char *LLBVHLoader::ST_NO_AXIS			= "Can't get rotation axis.";
++const char *LLBVHLoader::ST_NO_MOTION			= "Can't find MOTION.";
++const char *LLBVHLoader::ST_NO_FRAMES			= "Can't get number of frames.";
++const char *LLBVHLoader::ST_NO_FRAME_TIME		= "Can't get frame time.";
++const char *LLBVHLoader::ST_NO_POS			= "Can't get position values.";
++const char *LLBVHLoader::ST_NO_ROT			= "Can't get rotation values.";
++const char *LLBVHLoader::ST_NO_XLT_FILE		= "Can't open translation file.";
++const char *LLBVHLoader::ST_NO_XLT_HEADER		= "Can't read translation header.";
++const char *LLBVHLoader::ST_NO_XLT_NAME		= "Can't read translation names.";
++const char *LLBVHLoader::ST_NO_XLT_IGNORE		= "Can't read translation ignore value.";
++const char *LLBVHLoader::ST_NO_XLT_RELATIVE	= "Can't read translation relative value.";
++const char *LLBVHLoader::ST_NO_XLT_OUTNAME	= "Can't read translation outname value.";
++const char *LLBVHLoader::ST_NO_XLT_MATRIX		= "Can't read translation matrix.";
++const char *LLBVHLoader::ST_NO_XLT_MERGECHILD = "Can't get mergechild name.";
++const char *LLBVHLoader::ST_NO_XLT_MERGEPARENT = "Can't get mergeparent name.";
++const char *LLBVHLoader::ST_NO_XLT_PRIORITY	= "Can't get priority value.";
++const char *LLBVHLoader::ST_NO_XLT_LOOP		= "Can't get loop value.";
++const char *LLBVHLoader::ST_NO_XLT_EASEIN		= "Can't get easeIn values.";
++const char *LLBVHLoader::ST_NO_XLT_EASEOUT	= "Can't get easeOut values.";
++const char *LLBVHLoader::ST_NO_XLT_HAND		= "Can't get hand morph value.";
++const char *LLBVHLoader::ST_NO_XLT_EMOTE		= "Can't read emote name.";
+ 
+ //------------------------------------------------------------------------
+ // find_next_whitespace()
+--- linden/indra/llcharacter/llbvhloader.h.const_char	2007-08-10 19:36:41.000000000 +0200
++++ linden/indra/llcharacter/llbvhloader.h	2007-09-13 23:29:31.000000000 +0200
+@@ -205,38 +205,38 @@ public:
+ 	~LLBVHLoader();
+ 	
+ 	// Status Codes
+-	typedef char *Status;
+-	static char *ST_OK;
+-	static char *ST_EOF;
+-	static char *ST_NO_CONSTRAINT;
+-	static char *ST_NO_FILE;
+-	static char *ST_NO_HIER;
+-	static char *ST_NO_JOINT;
+-	static char *ST_NO_NAME;
+-	static char *ST_NO_OFFSET;
+-	static char *ST_NO_CHANNELS;
+-	static char *ST_NO_ROTATION;
+-	static char *ST_NO_AXIS;
+-	static char *ST_NO_MOTION;
+-	static char *ST_NO_FRAMES;
+-	static char *ST_NO_FRAME_TIME;
+-	static char *ST_NO_POS;
+-	static char *ST_NO_ROT;
+-	static char *ST_NO_XLT_FILE;
+-	static char *ST_NO_XLT_HEADER;
+-	static char *ST_NO_XLT_NAME;
+-	static char *ST_NO_XLT_IGNORE;
+-	static char *ST_NO_XLT_RELATIVE;
+-	static char *ST_NO_XLT_OUTNAME;
+-	static char *ST_NO_XLT_MATRIX;
+-	static char *ST_NO_XLT_MERGECHILD;
+-	static char *ST_NO_XLT_MERGEPARENT;
+-	static char *ST_NO_XLT_PRIORITY;
+-	static char *ST_NO_XLT_LOOP;
+-	static char *ST_NO_XLT_EASEIN;
+-	static char *ST_NO_XLT_EASEOUT;
+-	static char *ST_NO_XLT_HAND;
+-	static char *ST_NO_XLT_EMOTE;
++	typedef const char *Status;
++	static const char *ST_OK;
++	static const char *ST_EOF;
++	static const char *ST_NO_CONSTRAINT;
++	static const char *ST_NO_FILE;
++	static const char *ST_NO_HIER;
++	static const char *ST_NO_JOINT;
++	static const char *ST_NO_NAME;
++	static const char *ST_NO_OFFSET;
++	static const char *ST_NO_CHANNELS;
++	static const char *ST_NO_ROTATION;
++	static const char *ST_NO_AXIS;
++	static const char *ST_NO_MOTION;
++	static const char *ST_NO_FRAMES;
++	static const char *ST_NO_FRAME_TIME;
++	static const char *ST_NO_POS;
++	static const char *ST_NO_ROT;
++	static const char *ST_NO_XLT_FILE;
++	static const char *ST_NO_XLT_HEADER;
++	static const char *ST_NO_XLT_NAME;
++	static const char *ST_NO_XLT_IGNORE;
++	static const char *ST_NO_XLT_RELATIVE;
++	static const char *ST_NO_XLT_OUTNAME;
++	static const char *ST_NO_XLT_MATRIX;
++	static const char *ST_NO_XLT_MERGECHILD;
++	static const char *ST_NO_XLT_MERGEPARENT;
++	static const char *ST_NO_XLT_PRIORITY;
++	static const char *ST_NO_XLT_LOOP;
++	static const char *ST_NO_XLT_EASEIN;
++	static const char *ST_NO_XLT_EASEOUT;
++	static const char *ST_NO_XLT_HAND;
++	static const char *ST_NO_XLT_EMOTE;
+ 
+ 	// Loads the specified translation table.
+ 	Status loadTranslationTable(const char *fileName);
+--- linden/indra/llimagej2coj/llimagej2coj.cpp.const_char	2007-08-10 19:36:41.000000000 +0200
++++ linden/indra/llimagej2coj/llimagej2coj.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -217,7 +217,7 @@ BOOL LLImageJ2COJ::encodeImpl(LLImageJ2C
+ 	parameters.cod_format = 0;
+ 	if (!comment_text)
+ 	{
+-		parameters.cp_comment = "";
++		parameters.cp_comment = (char *)"";
+ 	}
+ 	else
+ 	{
+--- linden/indra/llmath/llquaternion.cpp.const_char	2007-08-10 19:36:41.000000000 +0200
++++ linden/indra/llmath/llquaternion.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -686,7 +686,7 @@ LLQuaternion mayaQ(F32 xRot, F32 yRot, F
+ 
+ const char *OrderToString( const LLQuaternion::Order order )
+ {
+-	char *p = NULL;
++	const char *p = NULL;
+ 	switch( order )
+ 	{
+ 	default:
+--- linden/indra/llmessage/llmessagetemplateparser.cpp.const_char	2007-08-10 19:36:41.000000000 +0200
++++ linden/indra/llmessage/llmessagetemplateparser.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -158,7 +158,7 @@ S32 get_checker_number(char checker)
+ }
+ 
+ // check token based on passed simplified regular expression
+-BOOL	b_check_token(const char *token, char *regexp)
++BOOL	b_check_token(const char *token, const char *regexp)
+ {
+ 	S32 tptr, rptr = 0;
+ 	S32 current_checker, next_checker = 0;
+--- linden/indra/llprimitive/llmaterialtable.cpp.const_char	2007-08-10 19:36:41.000000000 +0200
++++ linden/indra/llprimitive/llmaterialtable.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -278,7 +278,7 @@ void LLMaterialTable::initBasicTable()
+ 	}
+ }
+ 
+-BOOL LLMaterialTable::add(U8 mcode, char* name, const LLUUID &uuid)
++BOOL LLMaterialTable::add(U8 mcode, const char* name, const LLUUID &uuid)
+ {
+ 	LLMaterialInfo *infop;
+ 
+--- linden/indra/llprimitive/llmaterialtable.h.const_char	2007-08-10 19:36:41.000000000 +0200
++++ linden/indra/llprimitive/llmaterialtable.h	2007-09-13 23:29:31.000000000 +0200
+@@ -51,12 +51,12 @@ public:
+ 	F32			mDamageModifier;	// modifier on KE based damage
+ 	F32			mEPModifier;		// modifier on mass based EP total
+ 
+-	LLMaterialInfo(U8 mcode, char* name, const LLUUID &uuid)
++	LLMaterialInfo(U8 mcode, const char* name, const LLUUID &uuid)
+ 	{
+ 		init(mcode,name,uuid);
+ 	};
+ 
+-	void init(U8 mcode, char* name, const LLUUID &uuid)
++	void init(U8 mcode, const char* name, const LLUUID &uuid)
+ 	{
+ 		mName[0] = 0;
+ 		mDensity = 1000.f;             // default to 1000.0 (water)
+@@ -96,7 +96,7 @@ public:
+ 
+ 	void initBasicTable();
+ 
+-	BOOL add(U8 mcode, char* name, const LLUUID &uuid);	                 
++	BOOL add(U8 mcode, const char* name, const LLUUID &uuid);	                 
+ 	BOOL addCollisionSound(U8 mcode, U8 mcode2, const LLUUID &uuid);
+ 	BOOL addSlidingSound(U8 mcode, U8 mcode2, const LLUUID &uuid);
+ 	BOOL addRollingSound(U8 mcode, U8 mcode2, const LLUUID &uuid);
+--- linden/indra/llrender/llgldbg.cpp.const_char	2007-08-10 19:36:41.000000000 +0200
++++ linden/indra/llrender/llgldbg.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -40,7 +40,7 @@
+ //------------------------------------------------------------------------
+ // cmstr()
+ //------------------------------------------------------------------------
+-char *cmstr(int i)
++const char *cmstr(int i)
+ {
+ 	switch( i )
+ 	{
+@@ -56,7 +56,7 @@ char *cmstr(int i)
+ //------------------------------------------------------------------------
+ // facestr()
+ //------------------------------------------------------------------------
+-char *facestr(int i)
++const char *facestr(int i)
+ {
+ 	switch( i )
+ 	{
+--- linden/indra/llwindow/llwindowsdl.cpp.const_char	2007-08-10 19:36:42.000000000 +0200
++++ linden/indra/llwindow/llwindowsdl.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -207,7 +207,7 @@ BOOL check_for_card(const char* RENDERER
+ 
+ 
+ 
+-LLWindowSDL::LLWindowSDL(char *title, S32 x, S32 y, S32 width,
++LLWindowSDL::LLWindowSDL(const char *title, S32 x, S32 y, S32 width,
+ 							   S32 height, U32 flags,
+ 							   BOOL fullscreen, BOOL clearBg,
+ 							   BOOL disable_vsync, BOOL use_gl,
+--- linden/indra/llwindow/llwindowsdl.h.const_char	2007-08-10 19:36:42.000000000 +0200
++++ linden/indra/llwindow/llwindowsdl.h	2007-09-13 23:29:31.000000000 +0200
+@@ -126,7 +126,7 @@ public:
+ 
+ protected:
+ 	LLWindowSDL(
+-		char *title, int x, int y, int width, int height, U32 flags,
++		const char *title, int x, int y, int width, int height, U32 flags,
+ 		BOOL fullscreen, BOOL clearBg, BOOL disable_vsync, BOOL use_gl,
+ 		BOOL ignore_pixel_depth);
+ 	~LLWindowSDL();
+--- linden/indra/llwindow/llwindow.h.const_char	2007-08-10 19:36:42.000000000 +0200
++++ linden/indra/llwindow/llwindow.h	2007-09-13 23:29:31.000000000 +0200
+@@ -313,8 +313,8 @@ class LLWindowManager
+ {
+ public:
+ 	static LLWindow* createWindow(
+-		char *title,
+-		char *name,
++		const char *title,
++		const char *name,
+ 		LLCoordScreen upper_left = LLCoordScreen(10, 10),
+ 		LLCoordScreen size = LLCoordScreen(320, 240),
+ 		U32 flags = 0,
+@@ -324,7 +324,7 @@ public:
+ 		BOOL use_gl = TRUE,
+ 		BOOL ignore_pixel_depth = FALSE);
+ 	static LLWindow *createWindow(
+-		char* title, char* name, S32 x, S32 y, S32 width, S32 height,
++		const char* title, const char* name, S32 x, S32 y, S32 width, S32 height,
+ 		U32 flags = 0,
+ 		BOOL fullscreen = FALSE,
+ 		BOOL clearBg = FALSE,
+--- linden/indra/llwindow/llwindow.cpp.const_char	2007-08-10 19:36:42.000000000 +0200
++++ linden/indra/llwindow/llwindow.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -415,8 +415,8 @@ void LLSplashScreen::hide()
+ static LLLinkedList<LLWindow> sWindowList;
+ 
+ LLWindow* LLWindowManager::createWindow(
+-	char *title,
+-	char *name,
++	const char *title,
++	const char *name,
+ 	LLCoordScreen upper_left,
+ 	LLCoordScreen size,
+ 	U32 flags,
+@@ -432,7 +432,7 @@ LLWindow* LLWindowManager::createWindow(
+ }
+ 
+ LLWindow* LLWindowManager::createWindow(
+-	char *title, char *name, S32 x, S32 y, S32 width, S32 height, U32 flags,
++	const char *title, const char *name, S32 x, S32 y, S32 width, S32 height, U32 flags,
+ 	BOOL fullscreen, 
+ 	BOOL clearBg,
+ 	BOOL disable_vsync,
+--- linden/indra/llwindow/llwindowheadless.cpp.const_char	2007-08-10 19:36:42.000000000 +0200
++++ linden/indra/llwindow/llwindowheadless.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -34,7 +34,7 @@
+ //
+ // LLWindowHeadless
+ //
+-LLWindowHeadless::LLWindowHeadless(char *title, char *name, S32 x, S32 y, S32 width, S32 height,
++LLWindowHeadless::LLWindowHeadless(const char *title, const char *name, S32 x, S32 y, S32 width, S32 height,
+ 							 U32 flags,  BOOL fullscreen, BOOL clearBg,
+ 							 BOOL disable_vsync, BOOL use_gl, BOOL ignore_pixel_depth)
+ 	: LLWindow(fullscreen, flags)
+--- linden/indra/llwindow/llwindowheadless.h.const_char	2007-08-10 19:36:42.000000000 +0200
++++ linden/indra/llwindow/llwindowheadless.h	2007-09-13 23:29:31.000000000 +0200
+@@ -94,7 +94,7 @@ public:
+ 	/*virtual*/ void *getPlatformWindow() { return 0; };
+ 	/*virtual*/ void bringToFront() {};
+ 	
+-	LLWindowHeadless(char *title, char *name, S32 x, S32 y, S32 width, S32 height,
++	LLWindowHeadless(const char *title, const char *name, S32 x, S32 y, S32 width, S32 height,
+ 				  U32 flags,  BOOL fullscreen, BOOL clearBg,
+ 				  BOOL disable_vsync, BOOL use_gl, BOOL ignore_pixel_depth);
+ 	virtual ~LLWindowHeadless();
+--- linden/indra/lscript/lscript_library/lscript_library.cpp.const_char	2007-08-10 19:36:42.000000000 +0200
++++ linden/indra/lscript/lscript_library/lscript_library.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -451,7 +451,7 @@ void LLScriptLibrary::init()
+ 
+ 	//addFunction(new LLScriptLibraryFunction(10.f, 0.f, dummy_func, "llSetForSale", "i", "ii", "integer llSetForSale(integer selltype, integer price)\nSets this object for sale in mode selltype for price.  Returns TRUE if successfully set for sale."));
+ 
+-LLScriptLibraryFunction::LLScriptLibraryFunction(F32 eu, F32 st, void (*exec_func)(LLScriptLibData *, LLScriptLibData *, const LLUUID &), char *name, char *ret_type, char *args, char *desc, BOOL god_only)
++LLScriptLibraryFunction::LLScriptLibraryFunction(F32 eu, F32 st, void (*exec_func)(LLScriptLibData *, LLScriptLibData *, const LLUUID &), const char *name, const char *ret_type, const char *args, const char *desc, BOOL god_only)
+ 		: mEnergyUse(eu), mSleepTime(st), mExecFunc(exec_func), mName(name), mReturnType(ret_type), mArgs(args), mGodOnly(god_only)
+ {
+ 	mDesc = new char[512];
+--- linden/indra/lscript/lscript_compile/lscript_error.cpp.const_char	2007-08-10 19:36:42.000000000 +0200
++++ linden/indra/lscript/lscript_compile/lscript_error.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -46,13 +46,13 @@ void LLScriptFilePosition::fdotabs(FILE 
+ 	}
+ }
+ 
+-char* gWarningText[LSWARN_EOF] = 	 	/*Flawfinder: ignore*/
++const char* gWarningText[LSWARN_EOF] = 	 	/*Flawfinder: ignore*/
+ {
+ 	"INVALID",
+ 	"Dead code found beyond return statement"
+ };
+ 
+-char* gErrorText[LSERROR_EOF] = 	/*Flawfinder: ignore*/
++const char* gErrorText[LSERROR_EOF] = 	/*Flawfinder: ignore*/
+ {
+ 	"INVALID",
+ 	"Syntax error",
+--- linden/indra/lscript/lscript_compile/lscript_tree.cpp.const_char	2007-08-10 19:36:42.000000000 +0200
++++ linden/indra/lscript/lscript_compile/lscript_tree.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -8547,8 +8547,9 @@ void LLScriptDeclaration::recurse(FILE *
+ 			case LST_KEY:
+ 				if (mIdentifier->mScopeEntry->mIDType == LIT_VARIABLE)
+ 				{
++					char s[] = "";
+ 					chunk->addByte(LSCRIPTOpCodes[LOPC_PUSHARGS]);
+-					chunk->addBytes("", 1);
++					chunk->addBytes(s, 1);
+ 					chunk->addByte(LSCRIPTOpCodes[LOPC_LOADSP]);
+ 				}
+ 				break;
+@@ -8823,7 +8824,9 @@ void LLScriptEventHandler::recurse(FILE 
+ 		mStatement->recurse(fp, tabs, tabsize, pass, ptype, prunearg, mEventScope, type, basetype, count, chunk, heap, stacksize, entry, entrycount, NULL);
+ 		break;
+ 	case LSCP_TYPE:
+-		mScopeEntry = new LLScriptScopeEntry("Event", LIT_HANDLER, LST_NULL);
++	      {
++		char name[] = "Event";
++		mScopeEntry = new LLScriptScopeEntry(name, LIT_HANDLER, LST_NULL);
+ 		switch(mEventp->mType)
+ 		{
+ 		case LSTT_STATE_ENTRY:
+@@ -8948,6 +8951,7 @@ void LLScriptEventHandler::recurse(FILE 
+ 			break;
+ 		}
+ 		mStatement->recurse(fp, tabs, tabsize, pass, ptype, prunearg, scope, type, basetype, count, chunk, heap, stacksize, entry, entrycount, NULL);
++	      }
+ 		break;
+ 	case LSCP_RESOURCE:
+ 		// first determine resource counts for globals
+@@ -9797,7 +9801,7 @@ void LLScriptScript::recurse(FILE *fp, S
+ 			mGlobalScope = new LLScriptScope(gScopeStringTable);
+ 			// zeroth, add library functions to global scope
+ 			S32 i;
+-			char *arg;
++			const char *arg;
+ 			LLScriptScopeEntry *sentry;
+ 			for (i = 0; i < gScriptLibrary.mNextNumber; i++)
+ 			{
+--- linden/indra/lscript/lscript_compile/lscript_scope.h.const_char	2007-08-10 19:36:42.000000000 +0200
++++ linden/indra/lscript/lscript_compile/lscript_scope.h	2007-09-13 23:46:50.000000000 +0200
+@@ -274,14 +274,14 @@ public:
+ class LLScriptScopeEntry
+ {
+ public:
+-	LLScriptScopeEntry(char *identifier, LSCRIPTIdentifierType idtype, LSCRIPTType type, S32 count = 0)
++	LLScriptScopeEntry(const char *identifier, LSCRIPTIdentifierType idtype, LSCRIPTType type, S32 count = 0)
+ 		: mIdentifier(identifier), mIDType(idtype), mType(type), mOffset(0), mSize(0), mAssignable(NULL), mCount(count), mLibraryNumber(0)
+ 	{
+ 	}
+ 
+ 	~LLScriptScopeEntry() {}
+ 
+-	char						*mIdentifier;
++	const char						*mIdentifier;
+ 	LSCRIPTIdentifierType		mIDType;
+ 	LSCRIPTType					mType;
+ 	S32							mOffset;
+@@ -306,7 +306,7 @@ public:
+ 		mEntryMap.deleteAllData();
+ 	}
+ 
+-	LLScriptScopeEntry *addEntry(char *identifier, LSCRIPTIdentifierType idtype, LSCRIPTType type)
++	LLScriptScopeEntry *addEntry(const char *identifier, LSCRIPTIdentifierType idtype, LSCRIPTType type)
+ 	{
+ 		char *name = mSTable->addString(identifier);
+ 		if (!mEntryMap.checkData(name))
+@@ -326,7 +326,7 @@ public:
+ 		}
+ 	}
+ 
+-	BOOL checkEntry(char *identifier)
++	BOOL checkEntry(const char *identifier)
+ 	{
+ 		char *name = mSTable->addString(identifier);
+ 		if (mEntryMap.checkData(name))
+@@ -340,7 +340,7 @@ public:
+ 		}
+ 	}
+ 
+-	LLScriptScopeEntry *findEntry(char *identifier)
++	LLScriptScopeEntry *findEntry(const char *identifier)
+ 	{
+ 		char			*name = mSTable->addString(identifier);
+ 		LLScriptScope	*scope = this;
+@@ -357,7 +357,7 @@ public:
+ 		return NULL;
+ 	}
+ 
+-	LLScriptScopeEntry *findEntryTyped(char *identifier, LSCRIPTIdentifierType idtype)
++	LLScriptScopeEntry *findEntryTyped(const char *identifier, LSCRIPTIdentifierType idtype)
+ 	{
+ 		char			*name = mSTable->addString(identifier);
+ 		LLScriptScope	*scope = this;
+--- linden/indra/lscript/lscript_execute/lscript_execute.cpp.const_char	2007-08-10 19:36:42.000000000 +0200
++++ linden/indra/lscript/lscript_execute/lscript_execute.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -40,7 +40,7 @@
+ void (*binary_operations[LST_EOF][LST_EOF])(U8 *buffer, LSCRIPTOpCodesEnum opcode);
+ void (*unary_operations[LST_EOF])(U8 *buffer, LSCRIPTOpCodesEnum opcode);
+ 
+-char* LSCRIPTRunTimeFaultStrings[LSRF_EOF] =		/*Flawfinder: ignore*/
++const char* LSCRIPTRunTimeFaultStrings[LSRF_EOF] =		/*Flawfinder: ignore*/
+ {
+ 	"invalid",				//	LSRF_INVALID,
+ 	"Math Error",			//	LSRF_MATH,
+@@ -267,7 +267,7 @@ void LLScriptExecute::init()
+ 
+ S32 lscript_push_variable(LLScriptLibData *data, U8 *buffer);
+ 
+-U32 LLScriptExecute::run(BOOL b_print, const LLUUID &id, char **errorstr, BOOL &state_transition)
++U32 LLScriptExecute::run(BOOL b_print, const LLUUID &id, const char **errorstr, BOOL &state_transition)
+ {
+ 	//  is there a fault?
+ 	//	if yes, print out message and exit
+@@ -3651,7 +3651,7 @@ void lscript_run(char *filename, BOOL b_
+ 	}
+ 	else
+ 	{
+-		char *error;
++		const char *error;
+ 		BOOL b_state;
+ 		LLScriptExecute *execute = NULL;
+ 
+--- linden/indra/lscript/lscript_byteformat.h.const_char	2007-08-10 19:36:42.000000000 +0200
++++ linden/indra/lscript/lscript_byteformat.h	2007-09-13 23:29:31.000000000 +0200
+@@ -512,7 +512,7 @@ typedef enum e_lscript_runtime_faults
+ 	LSRF_EOF
+ } LSCRIPTRunTimeFaults;
+ 
+-extern char* LSCRIPTRunTimeFaultStrings[LSRF_EOF]; 	/*Flawfinder: ignore*/
++extern const char* LSCRIPTRunTimeFaultStrings[LSRF_EOF]; 	/*Flawfinder: ignore*/
+ 
+ const S32 LSCRIPTRunTimeFaultBits[LSRF_EOF] =
+ {
+--- linden/indra/lscript/lscript_execute.h.const_char	2007-08-10 19:36:42.000000000 +0200
++++ linden/indra/lscript/lscript_execute.h	2007-09-13 23:29:31.000000000 +0200
+@@ -370,7 +370,7 @@ public:
+ 	~LLScriptExecute();
+ 
+ 	void init();
+-	U32 run(BOOL b_print, const LLUUID &id, char **errorstr, BOOL &state_transition);
++	U32 run(BOOL b_print, const LLUUID &id, const char **errorstr, BOOL &state_transition);
+ 
+ 	BOOL (*mExecuteFuncs[0x100])(U8 *buffer, S32 &offset, BOOL b_print, const LLUUID &id);
+ 
+--- linden/indra/lscript/lscript_library.h.const_char	2007-08-10 19:36:42.000000000 +0200
++++ linden/indra/lscript/lscript_library.h	2007-09-13 23:29:31.000000000 +0200
+@@ -41,15 +41,15 @@ class LLScriptLibData;
+ class LLScriptLibraryFunction
+ {
+ public:
+-	LLScriptLibraryFunction(F32 eu, F32 st, void (*exec_func)(LLScriptLibData *, LLScriptLibData *, const LLUUID &), char *name, char *ret_type, char *args, char *desc, BOOL god_only = FALSE);
++	LLScriptLibraryFunction(F32 eu, F32 st, void (*exec_func)(LLScriptLibData *, LLScriptLibData *, const LLUUID &), const char *name, const char *ret_type, const char *args, const char *desc, BOOL god_only = FALSE);
+ 	~LLScriptLibraryFunction();
+ 
+ 	F32  mEnergyUse;
+ 	F32  mSleepTime;
+ 	void (*mExecFunc)(LLScriptLibData *, LLScriptLibData *, const LLUUID &);
+-	char *mName;
+-	char *mReturnType;
+-	char *mArgs;
++	const char *mName;
++	const char *mReturnType;
++	const char *mArgs;
+ 	char *mDesc;
+ 	BOOL mGodOnly;
+ };
+--- linden/indra/newview/llframestats.cpp.const_char	2007-08-10 19:36:46.000000000 +0200
++++ linden/indra/newview/llframestats.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -39,7 +39,7 @@
+ LLFrameStats gFrameStats;
+ 
+ // static
+-char *LLFrameStats::sStatLabels[NUM_STATS] = {
++const char *LLFrameStats::sStatLabels[NUM_STATS] = {
+ 					"IdleNetwork",
+ 					"AgentMisc",
+ 					"ObjectUpdate",
+--- linden/indra/newview/llframestats.h.const_char	2007-08-10 19:36:45.000000000 +0200
++++ linden/indra/newview/llframestats.h	2007-09-13 23:29:31.000000000 +0200
+@@ -116,7 +116,7 @@ private:
+ 	EStat				mCurrentStat;
+ 
+ 	LLStat				mStats[NUM_STATS];
+-	static char			*sStatLabels[NUM_STATS];
++	static const char			*sStatLabels[NUM_STATS];
+ 	static LLColor4		sStatColors[NUM_STATS];
+ 	LLDynamicArray<FrameData> mFrameData;
+ 	void stop();
+--- linden/indra/newview/llfloateranimpreview.cpp.const_char	2007-08-10 19:36:46.000000000 +0200
++++ linden/indra/newview/llfloateranimpreview.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -310,7 +310,7 @@ BOOL LLFloaterAnimPreview::postBuild()
+ 			}
+ 			else
+ 			{
+-				char* status = loaderp->getStatus();
++				const char* status = loaderp->getStatus();
+ 				LLString error_string("Unable to read animation file.\n\n");
+ 				error_string += LLString(status);
+ 				childSetValue("bad_animation_text", LLSD(error_string));
+--- linden/indra/newview/llpanelgrouplandmoney.cpp.const_char	2007-08-10 19:36:46.000000000 +0200
++++ linden/indra/newview/llpanelgrouplandmoney.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -1170,7 +1170,7 @@ void LLGroupMoneySalesTabEventHandler::p
+ 
+ 			if (amount != 0)
+ 			{
+-				char* verb;
++				const char* verb;
+ 
+ 				switch(type)
+ 				{
+--- linden/indra/newview/llviewermenu.cpp.const_char	2007-08-10 19:36:46.000000000 +0200
++++ linden/indra/newview/llviewermenu.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -3389,7 +3389,7 @@ void derez_objects(EDeRezDestination des
+ 	object = node->getObject();
+ 	if(!object) return;
+ 	LLViewerRegion* region = object->getRegion();
+-	char* error = NULL;
++	const char* error = NULL;
+ 
+ 	// Check conditions that we can't deal with, building a list of
+ 	// everything that we'll actually be derezzing.
+--- linden/indra/newview/llviewerregion.cpp.const_char	2007-08-10 19:36:46.000000000 +0200
++++ linden/indra/newview/llviewerregion.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -447,7 +447,7 @@ std::string LLViewerRegion::regionFlagsT
+ 	return result;
+ }
+ 
+-char* SIM_ACCESS_STR[] = { "Free Trial",
++const char* SIM_ACCESS_STR[] = { "Free Trial",
+ 						   "PG",
+ 						   "Mature",
+ 						   "Offline",
+--- linden/indra/newview/llvoavatar.cpp.const_char	2007-08-10 19:36:46.000000000 +0200
++++ linden/indra/newview/llvoavatar.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -8543,7 +8543,7 @@ void LLVOAvatar::dumpLocalTextures()
+ {
+ 	llinfos << "Local Textures:" << llendl;
+ 
+-	char* names[] = {
++	const char* names[] = {
+ 		"Shirt     ",
+ 		"UpperTatoo",
+ 		"Pants     ",
+--- linden/indra/newview/viewer.cpp.const_char	2007-09-13 23:29:31.000000000 +0200
++++ linden/indra/newview/viewer.cpp	2007-09-14 01:12:22.000000000 +0200
+@@ -2659,7 +2659,7 @@ void viewer_crash_callback()
+ 		do_basic_glibc_backtrace(); // only slightly useful backtrace
+ #  endif // LL_ELFBIN
+ 		// launch the actual crash logger
+-		char* ask_dialog = "-dialog";
++		const char* ask_dialog = "-dialog";
+ 		if (CRASH_BEHAVIOR_ASK != gCrashBehavior)
+ 			ask_dialog = ""; // omit '-dialog' option
+ 		std::string cmd =gDirUtilp->getAppRODataDir();
+@@ -2667,7 +2667,7 @@ void viewer_crash_callback()
+ 		cmd += "linux-crash-logger.bin";
+ 		char* const cmdargv[] =
+ 			{(char*)cmd.c_str(),
+-			 ask_dialog,
++			 (char *)ask_dialog,
+ 			 (char*)"-user",
+ 			 (char*)gUserServerName,
+ 			 (char*)"-name",
+@@ -4662,7 +4662,7 @@ BOOL	gVectorizeSkin		= FALSE;
+ 
+ void update_vector_performances(void)
+ {
+-	char *vp;
++	const char *vp;
+ 	
+ 	switch(gVectorizeProcessor)
+ 	{
+--- linden/indra/newview/llviewerwindow.cpp.const_char	2007-08-10 19:36:46.000000000 +0200
++++ linden/indra/newview/llviewerwindow.cpp	2007-09-13 23:29:31.000000000 +0200
+@@ -1442,7 +1442,7 @@ void LLViewerWindow::handleDataCopy(LLWi
+ // Classes
+ //
+ LLViewerWindow::LLViewerWindow(
+-	char* title, char* name,
++	const char* title, const char* name,
+ 	S32 x, S32 y,
+ 	S32 width, S32 height,
+ 	BOOL fullscreen, BOOL ignore_pixel_depth)
+--- linden/indra/newview/llviewerwindow.h.const_char	2007-08-10 19:36:45.000000000 +0200
++++ linden/indra/newview/llviewerwindow.h	2007-09-13 23:29:31.000000000 +0200
+@@ -64,7 +64,7 @@ public:
+ 	//
+ 	// CREATORS
+ 	//
+-	LLViewerWindow(char* title, char* name, S32 x, S32 y, S32 width, S32 height, BOOL fullscreen, BOOL ignore_pixel_depth);
++	LLViewerWindow(const char* title, const char* name, S32 x, S32 y, S32 width, S32 height, BOOL fullscreen, BOOL ignore_pixel_depth);
+ 	virtual ~LLViewerWindow();
+ 
+ 	void			initGLDefaults();

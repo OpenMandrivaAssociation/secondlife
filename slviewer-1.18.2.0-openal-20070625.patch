@@ -1,0 +1,726 @@
+--- linden/indra/llaudio/audioengine.cpp.openal	2007-08-10 19:36:40.000000000 +0200
++++ linden/indra/llaudio/audioengine.cpp	2007-09-12 10:36:54.000000000 +0200
+@@ -1331,7 +1331,7 @@ BOOL LLAudioSource::play(const LLUUID &a
+ BOOL LLAudioSource::isDone()
+ {
+ 	const F32 MAX_AGE = 60.f;
+-	const F32 MAX_UNPLAYED_AGE = 15.f;
++	const F32 MAX_UNPLAYED_AGE = 30.f;
+ 	if (isLoop())
+ 	{
+ 		// Looped sources never die on their own.
+--- linden/indra/llaudio/audioengine_dummy.cpp.openal	2007-09-12 10:36:54.000000000 +0200
++++ linden/indra/llaudio/audioengine_dummy.cpp	2007-09-12 10:36:54.000000000 +0200
+@@ -0,0 +1,79 @@
++#include "linden_common.h"
++
++#include "audioengine_dummy.h"
++#include "listener_dummy.h"
++
++LLAudioEngine_DUMMY::LLAudioEngine_DUMMY(){
++}
++
++LLAudioEngine_DUMMY::~LLAudioEngine_DUMMY(){
++}
++
++BOOL LLAudioEngine_DUMMY::init(const S32 num_channels, void* userdata){
++	LLAudioEngine::init(num_channels, userdata);
++
++	llinfos << "LLAudioEngine_DUMMY::init() initializing" << llendl;
++
++	return TRUE;
++}
++
++void LLAudioEngine_DUMMY::idle(F32 max_decode_time){
++	LLAudioEngine::idle(max_decode_time);
++}
++
++void LLAudioEngine_DUMMY::allocateListener(){
++	mListenerp = (LLListener *) new LLListener_DUMMY();
++	if(!mListenerp){
++		llwarns << "LLAudioEngine_DUMMY::allocateListener() Listener creation failed" << llendl;
++	}
++}
++
++void LLAudioEngine_DUMMY::shutdown(){
++	LLAudioEngine::shutdown();
++
++	llinfos << "LLAudioEngine_DUMMY::shutdown()" << llendl;
++
++	delete mListenerp;
++	mListenerp = NULL;
++}
++
++LLAudioBuffer *LLAudioEngine_DUMMY::createBuffer(){
++   return new LLAudioBufferDUMMY();
++}
++
++LLAudioChannel *LLAudioEngine_DUMMY::createChannel(){
++   return new LLAudioChannelDUMMY();
++}
++
++void LLAudioEngine_DUMMY::setInternalGain(F32 gain){
++	//llinfos << "LLAudioEngine_DUMMY::setInternalGain() Gain: " << gain << llendl;
++}
++
++void LLAudioEngine_DUMMY::startInternetStream(const char* url){
++	if (url) {
++		llinfos << "LLAudioEngine_DUMMY::startInternetStream() Starting internet stream: " << url << llendl;
++	}else{
++		llinfos << "LLAudioEngine_DUMMY::startInternetStream() Set internet stream to null" << llendl;
++	}
++}
++
++LLAudioChannelDUMMY::LLAudioChannelDUMMY(){
++}
++
++LLAudioChannelDUMMY::~LLAudioChannelDUMMY(){
++}
++
++LLAudioBufferDUMMY::LLAudioBufferDUMMY(){
++}
++
++LLAudioBufferDUMMY::~LLAudioBufferDUMMY(){
++}
++
++BOOL LLAudioBufferDUMMY::loadWAV(const char *filename){
++	llinfos << "LLAudioBufferDUMMY::loadWAV() : " << filename << llendl;
++	return FALSE;
++}
++
++U32 LLAudioBufferDUMMY::getLength(){
++	return 0;
++}
+--- linden/indra/llaudio/audioengine_dummy.h.openal	2007-09-12 10:36:54.000000000 +0200
++++ linden/indra/llaudio/audioengine_dummy.h	2007-09-12 10:36:54.000000000 +0200
+@@ -0,0 +1,61 @@
++#ifndef LL_AUDIOENGINE_DUMMY_H
++#define LL_AUDIOENGINE_DUMMY_H
++
++#include "audioengine.h"
++
++#include "listener_dummy.h"
++
++class LLAudioEngine_DUMMY : public LLAudioEngine 
++{
++public:
++	LLAudioEngine_DUMMY();
++	virtual ~LLAudioEngine_DUMMY();
++
++	virtual BOOL init(const S32 num_channels, void *user_data);
++	virtual void allocateListener();
++
++	virtual void shutdown();
++
++	virtual void idle(F32 max_decode_time = 0.f);
++
++	void setInternalGain(F32 gain);
++
++	LLAudioBuffer* createBuffer();
++	LLAudioChannel* createChannel();
++
++	// Internet stream methods
++	virtual void startInternetStream(const char* url);
++	void stopInternetStream(){};
++	void pauseInternetStream(int){};
++	int isInternetStreamPlaying(){};
++
++	void updateWind(LLVector3, F32){};
++	void initWind(){};
++	void cleanupWind(){};
++};
++
++class LLAudioChannelDUMMY : public LLAudioChannel{
++	public:
++		LLAudioChannelDUMMY();
++		virtual ~LLAudioChannelDUMMY();
++	protected:
++		void play(){};
++		void playSynced(LLAudioChannel *channelp){};
++		void cleanup(){};
++		BOOL isPlaying(){};
++
++		BOOL updateBuffer(){};
++		void update3DPosition(){};
++		void updateLoop(){};
++};
++
++class LLAudioBufferDUMMY : public LLAudioBuffer{
++	public:
++		LLAudioBufferDUMMY();
++		virtual ~LLAudioBufferDUMMY();
++
++		BOOL loadWAV(const char *filename);
++		U32 getLength();
++};
++
++#endif
+--- linden/indra/llaudio/audioengine_openal.cpp.openal	2007-09-12 10:36:54.000000000 +0200
++++ linden/indra/llaudio/audioengine_openal.cpp	2007-09-12 10:36:54.000000000 +0200
+@@ -0,0 +1,215 @@
++#include "linden_common.h"
++
++#include "audioengine_openal.h"
++#include "listener_openal.h"
++
++LLAudioEngine_OpenAL::LLAudioEngine_OpenAL(){
++}
++
++LLAudioEngine_OpenAL::~LLAudioEngine_OpenAL(){
++}
++
++BOOL LLAudioEngine_OpenAL::init(const S32 num_channels, void* userdata){
++	LLAudioEngine::init(num_channels, userdata);
++
++	if(!alutInit(NULL, NULL)){
++		llwarns << "LLAudioEngine_OpenAL::init() ALUT initialization failed: " << alutGetErrorString (alutGetError ()) << llendl;
++		return FALSE;
++	}
++
++	initInternetStream();
++
++	llinfos << "LLAudioEngine_OpenAL::init() OpenAL successfully initialized" << llendl;
++
++	llinfos << "LLAudioEngine_OpenAL::init() Speed of sound is: " << alGetFloat(AL_SPEED_OF_SOUND) << llendl;
++
++	return TRUE;
++}
++
++void LLAudioEngine_OpenAL::idle(F32 max_decode_time){
++	LLAudioEngine::idle(max_decode_time);
++}
++
++void LLAudioEngine_OpenAL::allocateListener(){
++	mListenerp = (LLListener *) new LLListener_OpenAL();
++	if(!mListenerp){
++		llwarns << "LLAudioEngine_OpenAL::allocateListener() Listener creation failed" << llendl;
++	}
++}
++
++void LLAudioEngine_OpenAL::shutdown(){
++	LLAudioEngine::shutdown();
++
++	if(!alutExit()){
++		llwarns << "LLAudioEngine_OpenAL::shutdown() ALUT shutdown failed: " << alutGetErrorString (alutGetError ()) << llendl;
++	}
++
++	llinfos << "LLAudioEngine_OpenAL::shutdown() OpenAL successfully shut down" << llendl;
++
++	delete mListenerp;
++	mListenerp = NULL;
++}
++
++LLAudioBuffer *LLAudioEngine_OpenAL::createBuffer(){
++   return new LLAudioBufferOpenAL();
++}
++
++LLAudioChannel *LLAudioEngine_OpenAL::createChannel(){
++   return new LLAudioChannelOpenAL();
++}
++
++void LLAudioEngine_OpenAL::setInternalGain(F32 gain){
++	//llinfos << "LLAudioEngine_OpenAL::setInternalGain() Gain: " << gain << llendl;
++	alListenerf(AL_GAIN, gain);
++}
++
++LLAudioChannelOpenAL::LLAudioChannelOpenAL(){
++	alGenSources(1, &ALSource);
++}
++
++LLAudioChannelOpenAL::~LLAudioChannelOpenAL(){
++	cleanup();
++	alDeleteSources(1, &ALSource);
++}
++
++void LLAudioChannelOpenAL::cleanup(){
++	alSourceStop(ALSource);
++	mCurrentBufferp = NULL;
++}
++
++void LLAudioChannelOpenAL::play(){
++	if(!isPlaying()){
++		alSourcePlay(ALSource);
++		getSource()->setPlayedOnce(TRUE);
++	}
++}
++
++void LLAudioChannelOpenAL::playSynced(LLAudioChannel *channelp){
++	play();
++}
++
++BOOL LLAudioChannelOpenAL::isPlaying(){
++	ALint state;
++	alGetSourcei(ALSource, AL_SOURCE_STATE, &state);
++	if(state == AL_PLAYING){
++		return TRUE;
++	}
++	return FALSE;
++}
++
++BOOL LLAudioChannelOpenAL::updateBuffer(){
++	if (LLAudioChannel::updateBuffer()){
++		// Base class update returned TRUE, which means that we need to actually
++		// set up the source for a different buffer.
++		LLAudioBufferOpenAL *bufferp = (LLAudioBufferOpenAL *)mCurrentSourcep->getCurrentBuffer();
++		alSourcei(ALSource, AL_BUFFER, bufferp->getBuffer());
++		alSourcef(ALSource, AL_GAIN, mCurrentSourcep->getGain());
++		alSourcei(ALSource, AL_LOOPING, mCurrentSourcep->isLoop() ? AL_TRUE : AL_FALSE);
++	}
++
++	return TRUE;
++}
++
++void LLAudioChannelOpenAL::update3DPosition(){
++	if(!mCurrentSourcep){
++		return;
++	}
++	if (mCurrentSourcep->isAmbient()){
++		alSource3f(ALSource, AL_POSITION, 0.0, 0.0, 0.0);
++		alSource3f(ALSource, AL_VELOCITY, 0.0, 0.0, 0.0);
++		//alSource3f(ALSource, AL_DIRECTION, 0.0, 0.0, 0.0);
++		alSourcef (ALSource, AL_ROLLOFF_FACTOR, 0.0);
++		alSourcei (ALSource, AL_SOURCE_RELATIVE, AL_TRUE);
++	}else{
++		LLVector3 float_pos;
++		float_pos.setVec(mCurrentSourcep->getPositionGlobal());
++		alSourcefv(ALSource, AL_POSITION, float_pos.mV);
++		//llinfos << "LLAudioChannelOpenAL::update3DPosition() Velocity: " << mCurrentSourcep->getVelocity() << llendl;
++		alSourcefv(ALSource, AL_VELOCITY, mCurrentSourcep->getVelocity().mV);
++		//alSource3f(ALSource, AL_DIRECTION, 0.0, 0.0, 0.0);
++		alSourcef (ALSource, AL_ROLLOFF_FACTOR, 1.0);
++		alSourcei (ALSource, AL_SOURCE_RELATIVE, AL_FALSE);
++	}
++	//llinfos << "LLAudioChannelOpenAL::update3DPosition() Gain: " << mCurrentSourcep->getGain() << llendl;
++	alSourcef(ALSource, AL_GAIN, mCurrentSourcep->getGain());
++}
++
++LLAudioBufferOpenAL::LLAudioBufferOpenAL(){
++	ALBuffer = AL_NONE;
++}
++
++LLAudioBufferOpenAL::~LLAudioBufferOpenAL(){
++	cleanup();
++}
++
++void LLAudioBufferOpenAL::cleanup(){
++	if(ALBuffer != AL_NONE){
++		alDeleteBuffers(1, &ALBuffer);
++	}
++}
++
++BOOL LLAudioBufferOpenAL::loadWAV(const char *filename){
++	cleanup();
++	ALBuffer = alutCreateBufferFromFile(filename);
++	if(ALBuffer == AL_NONE){
++		//ALenum error = alutGetError();
++		//llwarns << "LLAudioBufferOpenAL::loadWAV() Error loading " << filename
++		//	<< " " << alutGetErrorString(error) << llendl;
++		return FALSE;
++	}
++
++	return TRUE;
++}
++
++U32 LLAudioBufferOpenAL::getLength(){
++	if(ALBuffer == AL_NONE){
++		return 0;
++	}
++	ALint length;
++	alGetBufferi(ALBuffer, AL_SIZE, &length);
++	return length >> 2;
++}
++
++// ------------
++
++void LLAudioEngine_OpenAL::initInternetStream(){
++	mInternetStreamURL[0] = 0;
++}
++
++void LLAudioEngine_OpenAL::startInternetStream(const char* url){
++	if (url) {
++		llinfos << "LLAudioEngine_OpenAL::startInternetStream() Starting internet stream: " << url << llendl;
++		//strlcpy(mInternetStreamURL, url, 1024);
++	}else{
++		llinfos << "LLAudioEngine_OpenAL::startInternetStream() Set internet stream to null" << llendl;
++		mInternetStreamURL[0] = 0;
++	}
++}
++
++void LLAudioEngine_OpenAL::updateInternetStream(){
++}
++
++void LLAudioEngine_OpenAL::stopInternetStream(){
++}
++
++void LLAudioEngine_OpenAL::pauseInternetStream(int pause){
++}
++
++int LLAudioEngine_OpenAL::isInternetStreamPlaying(){
++	if(mInternetStreamURL[0]){
++		return 2; // "Paused"
++	}else{
++		return 0;
++	}
++}
++
++void LLAudioEngine_OpenAL::getInternetStreamInfo(char* artist_out, char* title_out){
++}
++
++void LLAudioEngine_OpenAL::setInternetStreamGain(F32 vol){
++}
++
++const char* LLAudioEngine_OpenAL::getInternetStreamURL(){
++	return mInternetStreamURL;
++}
++
+--- linden/indra/llaudio/audioengine_openal.h.openal	2007-09-12 10:36:54.000000000 +0200
++++ linden/indra/llaudio/audioengine_openal.h	2007-09-12 10:36:54.000000000 +0200
+@@ -0,0 +1,77 @@
++#ifndef LL_AUDIOENGINE_OpenAL_H
++#define LL_AUDIOENGINE_OpenAL_H
++
++#include "audioengine.h"
++
++#include "listener_openal.h"
++
++class LLAudioEngine_OpenAL : public LLAudioEngine{
++	public:
++		LLAudioEngine_OpenAL();
++		virtual ~LLAudioEngine_OpenAL();
++
++		virtual BOOL init(const S32 num_channels, void *user_data);
++		virtual void allocateListener();
++
++		virtual void shutdown();
++
++		virtual void idle(F32 max_decode_time = 0.f);
++
++		void setInternalGain(F32 gain);
++
++		LLAudioBuffer* createBuffer();
++		LLAudioChannel* createChannel();
++
++		// Internet stream methods
++		virtual void initInternetStream();
++		virtual void startInternetStream(const char* url);
++		virtual void stopInternetStream();
++		virtual void updateInternetStream();
++		virtual void pauseInternetStream(int pause);
++		virtual int isInternetStreamPlaying();
++		virtual void getInternetStreamInfo(char* artist, char* title);
++		virtual void setInternetStreamGain(F32 vol);
++		virtual const char* getInternetStreamURL();
++
++		void initWind(){};
++		void cleanupWind(){};
++		void updateWind(LLVector3, F32){};
++
++	protected:
++		char mInternetStreamURL[1024];	/*Flawfinder: ignore*/
++};
++
++class LLAudioChannelOpenAL : public LLAudioChannel{
++	public:
++		LLAudioChannelOpenAL();
++		virtual ~LLAudioChannelOpenAL();
++	protected:
++		void play();
++		void playSynced(LLAudioChannel *channelp);
++		void cleanup();
++		BOOL isPlaying();
++
++		BOOL updateBuffer();
++		void update3DPosition();
++		void updateLoop(){};
++
++		ALuint ALSource;
++};
++
++class LLAudioBufferOpenAL : public LLAudioBuffer{
++	public:
++		LLAudioBufferOpenAL();
++		virtual ~LLAudioBufferOpenAL();
++
++		BOOL loadWAV(const char *filename);
++		U32 getLength();
++
++		friend class LLAudioChannelOpenAL;
++	protected:
++		void cleanup();
++		ALuint getBuffer(){return ALBuffer;}
++		ALuint ALBuffer;
++};
++
++#endif
++
+--- linden/indra/llaudio/files.lst.openal	2007-08-10 19:36:40.000000000 +0200
++++ linden/indra/llaudio/files.lst	2007-09-12 10:36:54.000000000 +0200
+@@ -1,7 +1,7 @@
+ llaudio/audioengine.cpp
+-llaudio/audioengine_fmod.cpp
++llaudio/audioengine_openal.cpp
+ llaudio/listener.cpp
+-llaudio/listener_fmod.cpp
++llaudio/listener_openal.cpp
+ llaudio/llaudiodecodemgr.cpp
+ llaudio/vorbisdecode.cpp
+ llaudio/vorbisencode.cpp
+--- linden/indra/llaudio/listener_dummy.cpp.openal	2007-09-12 10:36:54.000000000 +0200
++++ linden/indra/llaudio/listener_dummy.cpp	2007-09-12 10:36:54.000000000 +0200
+@@ -0,0 +1,31 @@
++#include "linden_common.h"
++#include "audioengine.h"
++
++#include "listener_dummy.h"
++
++LLListener_DUMMY::LLListener_DUMMY(){
++	init();
++}
++
++LLListener_DUMMY::~LLListener_DUMMY(){
++}
++
++void LLListener_DUMMY::translate(LLVector3 offset){
++	LLListener::translate(offset);
++	//llinfos << "LLListener_DUMMY::transelate() : " << offset << llendl;
++}
++
++void LLListener_DUMMY::setPosition(LLVector3 pos){
++	LLListener::setPosition(pos);
++	//llinfos << "LLListener_DUMMY::setPosition() : " << pos << llendl;
++}
++
++void LLListener_DUMMY::setVelocity(LLVector3 vel){
++	LLListener::setVelocity(vel);
++	//llinfos << "LLListener_DUMMY::setVelocity() : " << vel << llendl;
++}
++
++void LLListener_DUMMY::orient(LLVector3 up, LLVector3 at){
++	LLListener::orient(up, at);
++	//llinfos << "LLListener_DUMMY::orient() up: " << up << " at: " << at << llendl;
++}
+--- linden/indra/llaudio/listener_dummy.h.openal	2007-09-12 10:36:54.000000000 +0200
++++ linden/indra/llaudio/listener_dummy.h	2007-09-12 10:36:54.000000000 +0200
+@@ -0,0 +1,20 @@
++#ifndef LL_LISTENER_DUMMY_H
++#define LL_LISTENER_DUMMY_H
++
++#include "listener.h"
++
++class LLListener_DUMMY : public LLListener
++{
++ private:
++	
++ public:  
++	LLListener_DUMMY();
++	virtual ~LLListener_DUMMY();
++
++	virtual void translate(LLVector3 offset);
++	virtual void setPosition(LLVector3 pos);
++	virtual void setVelocity(LLVector3 vel);
++	virtual void orient(LLVector3 up, LLVector3 at);
++};
++
++#endif
+--- linden/indra/llaudio/listener_openal.cpp.openal	2007-09-12 10:36:54.000000000 +0200
++++ linden/indra/llaudio/listener_openal.cpp	2007-09-12 10:36:54.000000000 +0200
+@@ -0,0 +1,65 @@
++#include "linden_common.h"
++#include "audioengine.h"
++
++#include "listener_openal.h"
++
++LLListener_OpenAL::LLListener_OpenAL(){
++	init();
++}
++
++LLListener_OpenAL::~LLListener_OpenAL(){
++}
++
++void LLListener_OpenAL::translate(LLVector3 offset){
++	LLListener::translate(offset);
++	llinfos << "LLListener_OpenAL::transelate() : " << offset << llendl;
++}
++
++void LLListener_OpenAL::setPosition(LLVector3 pos){
++	LLListener::setPosition(pos);
++	//llinfos << "LLListener_OpenAL::setPosition() : " << pos << llendl;
++}
++
++void LLListener_OpenAL::setVelocity(LLVector3 vel){
++	LLListener::setVelocity(vel);
++}
++
++void LLListener_OpenAL::orient(LLVector3 up, LLVector3 at){
++	LLListener::orient(up, at);
++	//llinfos << "LLListener_OpenAL::orient() up: " << up << " at: " << at << llendl;
++}
++
++void LLListener_OpenAL::commitDeferredChanges(){
++	ALfloat orientation[6];
++	orientation[0] = mListenAt.mV[0];
++	orientation[1] = mListenAt.mV[1];
++	orientation[2] = mListenAt.mV[2];
++	orientation[3] = mListenUp.mV[0];
++	orientation[4] = mListenUp.mV[1];
++	orientation[5] = mListenUp.mV[2];
++
++	// Why is this backwards?
++	ALfloat velocity[3];
++	velocity[0] = -mVelocity.mV[0];
++	velocity[1] = -mVelocity.mV[1];
++	velocity[2] = -mVelocity.mV[2];
++
++	alListenerfv(AL_ORIENTATION, orientation);
++	alListenerfv(AL_POSITION, mPosition.mV);
++	alListenerfv(AL_VELOCITY, velocity);
++}
++
++void LLListener_OpenAL::setDopplerFactor(F32 factor){
++	// Effect is way too strong by default, scale it down here.
++	// Scaling the speed of sound up causes crashes.
++	factor *= 0.01f;
++	llinfos << "LLListener_OpenAL::setDopplerFactor() : " << factor << llendl;
++	alDopplerFactor(factor);
++}
++
++F32 LLListener_OpenAL::getDopplerFactor(){
++	ALfloat factor;
++	alDopplerFactor(factor);
++	llinfos << "LLListener_OpenAL::getDopplerFactor() : " << factor << llendl;
++	return factor;
++}
+--- linden/indra/llaudio/listener_openal.h.openal	2007-08-10 19:36:40.000000000 +0200
++++ linden/indra/llaudio/listener_openal.h	2007-09-12 10:36:54.000000000 +0200
+@@ -51,7 +51,10 @@ class LLListener_OpenAL  : public LLList
+ 	virtual void setPosition(LLVector3 pos);
+ 	virtual void setVelocity(LLVector3 vel);
+ 	virtual void orient(LLVector3 up, LLVector3 at);
++	virtual void commitDeferredChanges();
++
++	virtual void setDopplerFactor(F32 factor);
++	virtual F32 getDopplerFactor();
+ };
+ 
+ #endif
+-
+--- linden/indra/llaudio/llaudiodecodemgr.cpp.openal	2007-08-10 19:36:40.000000000 +0200
++++ linden/indra/llaudio/llaudiodecodemgr.cpp	2007-09-12 10:36:54.000000000 +0200
+@@ -376,16 +376,15 @@ BOOL LLVorbisDecodeState::finishDecode()
+   
+ 		// write "data" chunk length, in little-endian format
+ 		S32 data_length = mWAVBuffer.size() - WAV_HEADER_SIZE;
+-		mWAVBuffer[40] = (data_length) & 0x000000FF;
+-		mWAVBuffer[41] = (data_length >> 8) & 0x000000FF;
+-		mWAVBuffer[42] = (data_length >> 16) & 0x000000FF;
+-		mWAVBuffer[43] = (data_length >> 24) & 0x000000FF;
++		mWAVBuffer[40] = (data_length - 8) & 0x000000FF;
++		mWAVBuffer[41] = ((data_length - 8)>> 8) & 0x000000FF;
++		mWAVBuffer[42] = ((data_length - 8)>> 16) & 0x000000FF;
++		mWAVBuffer[43] = ((data_length - 8)>> 24) & 0x000000FF;
+ 		// write overall "RIFF" length, in little-endian format
+-		data_length += 36;
+-		mWAVBuffer[4] = (data_length) & 0x000000FF;
+-		mWAVBuffer[5] = (data_length >> 8) & 0x000000FF;
+-		mWAVBuffer[6] = (data_length >> 16) & 0x000000FF;
+-		mWAVBuffer[7] = (data_length >> 24) & 0x000000FF;
++		mWAVBuffer[4] = (data_length + 28) & 0x000000FF;
++		mWAVBuffer[5] = ((data_length + 28) >> 8) & 0x000000FF;
++		mWAVBuffer[6] = ((data_length + 28) >> 16) & 0x000000FF;
++		mWAVBuffer[7] = ((data_length + 28) >> 24) & 0x000000FF;
+ 
+ 		//
+ 		// FUCK!!! Vorbis encode/decode messes up loop point transitions (pop)
+@@ -397,7 +396,7 @@ BOOL LLVorbisDecodeState::finishDecode()
+ 			S32 fade_length;
+ 			char pcmout[4096];		/*Flawfinder: ignore*/ 	
+ 
+-			fade_length = llmin((S32)128,(S32)(data_length-36)/8);			
++			fade_length = llmin((S32)128,(S32)(data_length)/8);			
+ 			if((S32)mWAVBuffer.size() >= (WAV_HEADER_SIZE + 2* fade_length))
+ 			{
+ 				memcpy(pcmout, &mWAVBuffer[WAV_HEADER_SIZE], (2 * fade_length));	/*Flawfinder: ignore*/
+@@ -437,7 +436,7 @@ BOOL LLVorbisDecodeState::finishDecode()
+ 			}
+ 		}
+ 
+-		if (36 == data_length)
++		if (0 == data_length)
+ 		{
+ 			llwarns << "BAD Vorbis decode in finishDecode!" << llendl;
+ 			mValid = FALSE;
+@@ -445,7 +444,7 @@ BOOL LLVorbisDecodeState::finishDecode()
+ 		}
+ #if !defined(USE_WAV_VFILE)
+ 		mBytesRead = -1;
+-		mFileHandle = LLLFSThread::sLocal->write(mOutFilename, &mWAVBuffer[0], 0, data_length,
++		mFileHandle = LLLFSThread::sLocal->write(mOutFilename, &mWAVBuffer[0], 0, data_length + 36,
+ 												 new WriteResponder(this));
+ #endif
+ 	}
+--- linden/indra/newview/llstartup.cpp.openal	2007-08-10 19:36:46.000000000 +0200
++++ linden/indra/newview/llstartup.cpp	2007-09-12 10:36:54.000000000 +0200
+@@ -38,9 +38,7 @@
+ 
+ #include "audioengine.h"
+ 
+-#if LL_FMOD
+-#include "audioengine_fmod.h"
+-#endif
++#include "audioengine_openal.h"
+ 
+ #include "audiosettings.h"
+ #include "llcachename.h"
+@@ -576,11 +574,7 @@ BOOL idle_startup()
+ 
+ 		if (gUseAudio)
+ 		{
+-#if LL_FMOD
+-			gAudiop = (LLAudioEngine *) new LLAudioEngine_FMOD();
+-#else
+-			gAudiop = NULL;
+-#endif
++			gAudiop = (LLAudioEngine *) new LLAudioEngine_OpenAL();
+ 
+ 			if (gAudiop)
+ 			{
+--- linden/indra/newview/viewer.cpp.openal	2007-09-12 10:36:54.000000000 +0200
++++ linden/indra/newview/viewer.cpp	2007-09-12 10:36:54.000000000 +0200
+@@ -6148,17 +6148,10 @@ void cleanup_app()
+ 
+ 	llinfos << "Global stuff deleted" << llendflush;
+ 
+-#if !LL_RELEASE_FOR_DOWNLOAD
+ 	if (gAudiop)
+ 	{
+ 		gAudiop->shutdown();
+ 	}
+-#else
+-	// This hack exists because fmod likes to occasionally hang forever
+-	// when shutting down for no apparent reason.
+-	llwarns << "Hack, skipping audio engine cleanup" << llendflush;
+-#endif
+-
+ 
+ 	// moved to main application shutdown for now because it's non-trivial and only needs to be done once
+ 	// (even though it goes against the media framework design)
+--- linden/indra/SConstruct.openal	2007-08-10 19:36:40.000000000 +0200
++++ linden/indra/SConstruct	2007-09-12 10:43:42.000000000 +0200
+@@ -156,6 +156,8 @@ standalone_pkgs = [
+     'vorbis',
+     'vorbisenc',
+     'vorbisfile',
++    'openal',
++    'freealut',
+     ]
+ 
+ def pkgconfig(opt, pkgs=None):
+@@ -641,7 +643,7 @@ for build_target in targets:
+                               pkgconfig('--libs-only-l').split() ]
+         else:
+             external_libs += [ 'freetype', 'SDL', 'ogg', 'vorbisenc',
+-                               'vorbisfile', 'vorbis', 'db-4.2' ]
++                               'vorbisfile', 'vorbis', 'db-4.2', 'openal', 'freealut' ]
+ 
+         external_libs += [ 'jpeg', 'openjpeg', 'png12', 'GL', 'GLU' ]
+ 

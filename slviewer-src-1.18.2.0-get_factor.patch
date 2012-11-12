@@ -1,0 +1,11 @@
+--- linden/indra/llaudio/listener_openal.cpp.get_factor	2007-09-12 10:44:48.000000000 +0200
++++ linden/indra/llaudio/listener_openal.cpp	2007-09-12 18:57:00.000000000 +0200
+@@ -59,7 +59,7 @@ void LLListener_OpenAL::setDopplerFactor
+ 
+ F32 LLListener_OpenAL::getDopplerFactor(){
+ 	ALfloat factor;
+-	alDopplerFactor(factor);
++	factor = alGetFloat(AL_DOPPLER_FACTOR);
+ 	llinfos << "LLListener_OpenAL::getDopplerFactor() : " << factor << llendl;
+ 	return factor;
+ }

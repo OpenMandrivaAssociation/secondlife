@@ -1,0 +1,11 @@
+--- linden/indra/newview/viewer.cpp.size_t	2007-06-27 19:09:46.000000000 +0200
++++ linden/indra/newview/viewer.cpp	2007-06-27 22:38:29.000000000 +0200
+@@ -2368,7 +2368,7 @@ static inline BOOL do_elfio_glibc_backtr
+ 	size_t btpos;
+ 	for (btpos = 0; btpos < btsize; ++btpos)
+ 	{
+-		fprintf(StraceFile, "%d:\t", btpos);
++		fprintf(StraceFile, "%zd:\t", btpos);
+ 		int symidx;
+ 		for (symidx = 0; symidx < nSymNo; ++symidx)
+ 		{

@@ -1,0 +1,14 @@
+--- linden/indra/SConstruct.resolv	2007-09-12 19:30:43.000000000 +0200
++++ linden/indra/SConstruct	2007-09-13 15:24:09.000000000 +0200
+@@ -220,10 +220,7 @@ for build_target in targets:
+         if arch == 'x86_64' and os.path.exists('/usr/lib64'):
+             client_external_libs = [File('/usr/lib64/libresolv.a')]
+         else:
+-            # Custom libresolv build which avoids a billion flavors of
+-            # brokenness prevalent in common libresolvs out there.
+-            client_external_libs = ['resolv']
+-            include_dirs += ['../libraries/' + system_str + '/include/llresolv8']
++            client_external_libs = [File('/usr/lib/libresolv.a')]
+     else:
+         client_external_libs = ['resolv']
+ 

@@ -1,0 +1,11 @@
+--- linden/indra/SConstruct.nomanifest	2007-09-29 13:16:43.000000000 +0200
++++ linden/indra/SConstruct	2007-09-29 14:26:34.000000000 +0200
+@@ -662,7 +662,7 @@ for build_target in targets:
+         env.Command(output_bin, output_bin + '-globalsyms', hidesyms_cmd)
+         Default(output_bin)
+ 
+-        if buildtype == 'releasefordownload':
++        if 0 and buildtype == 'releasefordownload':
+ 
+             #######################
+             # PACKAGE THE CLIENT  #

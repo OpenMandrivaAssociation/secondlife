@@ -1,0 +1,19 @@
+--- linden/indra/newview/linux_tools/wrapper.sh.datapath	2007-08-10 19:36:48.000000000 +0200
++++ linden/indra/newview/linux_tools/wrapper.sh	2007-09-12 10:35:42.000000000 +0200
+@@ -65,7 +65,8 @@ if [ -n "$LL_TCMALLOC" ]; then
+ 	fi
+     fi
+ fi
+-LD_LIBRARY_PATH="`pwd`"/lib:"`pwd`"/app_settings/mozilla-runtime-linux-i686:"${LD_LIBRARY_PATH}" $LL_WRAPPER bin/do-not-directly-run-secondlife-bin `cat gridargs.dat` $@ | cat
++cd /usr/share/games/secondlife
++$LL_WRAPPER secondlife.bin $@
+ 
+ echo
+ echo '*********************************************************'
+@@ -73,5 +74,5 @@ echo 'This is an ALPHA release of the Se
+ echo 'Thank you for testing!'
+ echo 'You can visit the Linux Client Alpha Testers forum at:'
+ echo 'http://forums.secondlife.com/forumdisplay.php?forumid=263'
+-echo 'Please see README-linux.txt before reporting problems.'
++echo 'Please see client-readme.txt before reporting problems.'
+ echo
