@@ -7,7 +7,7 @@
 %define oname slviewer-src
 %define distname %{oname}-%{snapshot}
 %else
-%define release %mkrel 4
+%define release %mkrel 5
 %if %{beta}
 %define oname slviewer-src-beta
 %else
@@ -19,7 +19,11 @@
 %define sl_arch %(echo %{_target_cpu}|sed -e "s/\\(i.86\\|athlon\\)/i686/")
 
 # we use private symbols from resolv.a
+%if %{_use_internal_dependency_generator}
+%define __noautoreq 'GLIBC_PRIVATE'
+%else
 %define _requires_exceptions GLIBC_PRIVATE
+%endif
 
 Summary: %{Summary}
 Name: %{name}
@@ -40,13 +44,14 @@ Patch10: slviewer-src-1.18.2.0-get_factor.patch
 License: GPL
 Group: Games/Other
 Url: http://secondlife.com/
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: SDL-devel
 BuildRequires: apr-util-devel bison boost-devel curl-devel elfio-devel expat-devel
 BuildRequires: freetype2-devel gtk2-devel jpeg-devel flex libxmlrpc-devel
 BuildRequires: mesaglu-devel oggvorbis-devel openjpeg-devel scons zlib-devel
 BuildRequires: freealut-devel openal-devel google-perftools-devel
 BuildRequires: glibc-static-devel
+BuildRequires: pkgconfig(pangox)
+BuildRequires: pkgconfig(pangoxft)
 #BuildRequires: libgstreamer-plugins-base-devel
 BuildConflicts: freetype-devel
 Requires: fonts-ttf-bitstream-vera
@@ -88,11 +93,6 @@ mkdir libraries/include/zlib
 ln -s %{_includedir}/zlib.h libraries/include/zlib
 
 %build
-%if %mdkversion < 200710
-  CLIENT_CPPFLAGS="$CLIENT_CPPFLAGS -I/usr/include/freetype2 -I/usr/include/libpng12"
-  export CLIENT_CPPFLAGS
-%endif
-
 pushd indra
 scons BUILD=releasefordownload BTARGET=client STANDALONE=yes ARCH=%{sl_arch} DISTCC=no MOZLIB=no FMOD=no GSTREAMER=no
 popd
@@ -129,7 +129,6 @@ Categories=Game;AdventureGame;X-MandrivaLinux-MoreApplications-Games-Adventure;
 EOF
 
 %clean
-rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
